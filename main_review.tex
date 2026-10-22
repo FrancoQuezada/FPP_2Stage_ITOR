@@ -1509,8 +1509,7 @@ directed graph representing the spread of fire from its ignition point.
 For optimization, these graphs are reduced using a shortest-path-based
 procedure that represents propagation routes from the ignition to the
 affected cells. The resulting graphs may contain multiple paths to the
-same cell and are therefore not necessarily trees. All cell weights
-are set to $w_v=1$.
+same cell and are therefore not necessarily trees. Both the in-sample optimization and the out-of-sample evaluation use these reduced propagation graphs. All cell weights are set to $w_v=1$.
 
 We consider three scenario sample sizes, $n\in\{100,200,400\}$, and
 three firebreak intensities, $\alpha\in\{0.01,0.02,0.03\}$, corresponding
@@ -1520,13 +1519,15 @@ level $\beta=0.9$. For each combination of scenario sample size, firebreak inten
 
 We compare the extensive mixed-integer linear programming formulation
 with four variants of the proposed Branch-and-Benders decomposition and
-a combinatorial Branch-and-Benders benchmark. All Branch-and-Benders
-variants use CPLEX to solve the master mixed-integer program and the
-scenario linear programming subproblems. Benders optimality cuts are
-generated at integer candidate solutions, while additional LP-dual cuts
-are generated at the root relaxation. The methods differ in the
-additional inequalities used to strengthen the master problem, as
-summarized in Table~\ref{tab:methods}.
+a combinatorial Branch-and-Benders benchmark. All methods use CPLEX to solve the master mixed-integer
+program. The four LP-based Branch-and-Benders variants
+solve scenario linear programming subproblems, generating
+Benders optimality cuts at integer candidate solutions
+and additional LP-dual cuts at the root relaxation.
+The combinatorial benchmark instead generates optimality
+cuts without solving scenario LPs. The distinguishing
+features of the methods are summarized in
+Table~\ref{tab:methods}.
 
 \begin{table}[t]
 \centering
@@ -1594,9 +1595,7 @@ risk preferences.
 
 \subsection{Algorithmic performance}\label{sec:results}
 
-Table~\ref{tab:new20-gaps-times} compares the six methods across the three
-risk-weighting settings. For each method and risk setting, the proportion of instances solved
-to optimality is calculated over 270 instances. Reported optimality gaps and solver times include both optimal and time-limited instances. 
+Table~\ref{tab:new20-gaps-times} compares the six methods across the three risk-weighting settings. For each method and risk setting, the proportion of instances solved to optimality is calculated over 270 instances. Reported optimality gaps and solver times include both optimal and time-limited instances. 
 
 \begin{center}
 \begin{minipage}{\linewidth}
@@ -1641,13 +1640,6 @@ $\lambda$ & Method & Optimal (\%) & Mean gap (\%) & Max. gap (\%) & Mean time (s
 \end{minipage}
 \end{center}
 
-
-Table~\ref{tab:new20-gaps-times} compares the computational performance
-of the six methods across the three risk settings. For each method and
-setting, the proportion of instances solved to optimality is computed
-over 270 instances. Reported optimality gaps and solver times include
-both optimal and time-limited instances. 
-
 For expected-loss minimization ($\lambda=1$), MILP, B\&B-III, and CB\&B
 solve all 270 instances to optimality. CB\&B achieves the lowest mean
 computational time (28.4\,s), followed by B\&B-III (71.3\,s) and MILP
@@ -1668,8 +1660,9 @@ proposed decomposition framework.
 
 The comparison among the Branch-and-Benders variants highlights the
 importance of strengthening the scenario recourse approximations.
-Adding the static inequality \eqref{eq:llbi} in B\&B-I produces only
-marginal improvements over B\&B. This limited effect is consistent
+Adding the static inequality \eqref{eq:llbi} in
+B\&B-I provides limited and inconsistent improvements
+over the standard B\&B approach. This limited effect is consistent
 with the construction of the inequality, which may substantially
 underestimate scenario losses when downstream sets overlap.
 In contrast, B\&B-II dynamically separates
@@ -1725,7 +1718,12 @@ The performance profiles provide further evidence of this advantage. As shown in
 A similar pattern emerges for the mean--CVaR setting
 ($\lambda=0.5$). B\&B-III solves 87.8\% of instances to optimality, compared with 78.5\% for CB\&B and 65.2\% for B\&B-II. It also reduces the mean computational time from 697.8\,s for CB\&B to 461.1\,s, while achieving a smaller mean final optimality gap (0.39\% versus 0.89\%). The corresponding distributions in Figure~\ref{fig:alg-mean-cvar} show that all B\&B-III instances finish with a gap below 5\%, including those not solved to optimality. These findings indicate that the benefits of the path-based inequalities persist when expected loss and tail risk are considered simultaneously.
 
-Overall, B\&B-III exhibits the strongest computational performance among the proposed Branch-and-Benders variants across all three risk settings, while outperforming the combinatorial benchmark when CVaR contributes to the objective.
+Overall, B\&B-III achieves the strongest computational
+performance across the complete benchmark, certifying
+84.9\% of instances to optimality, compared with
+77.3\% for CB\&B and 63.6\% for MILP. It also
+achieves the lowest mean computational time (460.9\,s),
+compared with 594.6\,s and 901.0\,s, respectively.
 
 The differences between methods become more pronounced as the firebreak budget increases. At $\alpha=0.03$, neither B\&B nor B\&B-I solves any of the 90 instances to optimality under any risk setting. In contrast, B\&B-III solves 90, 23, and 58 instances under expected loss, CVaR, and mean--CVaR, respectively. Larger budgets expand the set of feasible firebreak placements
 and increase the interactions among potential protection decisions. Consequently, weak recourse approximations may leave a large number of promising but overly optimistic solutions in the master relaxation. The dynamically separated inequalities help reduce
@@ -1841,7 +1839,7 @@ samples rather than nested samples.
 
 The reductions in out-of-sample dispersion are especially apparent
 for tail-risk objectives. At $\alpha=0.01$, the standard deviation of
-held-out CVaR decreases from 9.23 to 2.38 between $n=100$ and $n=400$,
+held-out CVaR decreases from 9.22 to 2.38 between $n=100$ and $n=400$,
 with all 30 sampled problems solved to optimality at both sizes.
 The discrepancy between training and held-out CVaR also narrows:
 their respective mean values are 253.94 and 274.86 at $n=100$,
