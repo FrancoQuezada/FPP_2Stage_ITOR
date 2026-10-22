@@ -101,19 +101,18 @@
 \let\WriteBookmarks\relax
 \def\floatpagepagefraction{1}
 \def\textpagefraction{.001}
-\shorttitle{A firebreak placement model using two-stage stochastic programming}
+\shorttitle{Risk-averse stochastic firebreak placement}
 \shortauthors{Quezada et~al.}
 %\begin{frontmatter}
 
-\title [mode = title]{A two-stage stochastic programming approach incorporating spatially-explicit fire scenarios for optimal firebreak placement} 
+\title [mode = title]{A risk-averse two-stage stochastic firebreak placement problem: Graph-based valid inequalities and exact decomposition} 
 
-
-
-\author[2]{Mat\'ias Vilches}[]
-\ead{matias.vilches.a@usach.cl}
 
 \author[2,4]{Franco Quezada}[]\cormark[1]
 \ead{franco.quezada@usach.cl}
+
+\author[2]{Mat\'ias Vilches}[]
+\ead{matias.vilches.a@usach.cl}
 
 \author[2,4]{Sebasti\'an D\'avila-G\'alvez}
 \ead{sebastian.davila@usach.cl}
@@ -130,9 +129,6 @@
 %\ead{david.palacios@ug.uchile.cl}
 
 %\credit{Data curation; Review}
-
-
-
 %\credit{Data curation; Review}
 
 % \author[3,5]{Andr\'es Weintraub}[]
@@ -156,12 +152,18 @@
 
 %%% ABSTRACT
 \begin{abstract}
-    Ensuring the effective placement of firebreaks across the landscape is a critical issue in wildfire prevention, as their success relies on their ability to block the spread of future fires. To address this challenge, it is essential to recognize the stochastic nature of fires, which are highly unpredictable from start to finish. The issue is closely linked to the wider problem of climate change, which is causing more frequent and severe wildfires worldwide due to rising temperatures and changing rainfall patterns. Determining the optimal placement of firebreaks in a landscape is a stochastic combinatorial optimization problem that involves the interplay of different management options with the possibilities of a random variable representing the spread of fires, which is currently not well understood. To tackle this issue, our research presents a two-stage stochastic programming approach to model uncertainty in the spread of fires. We thus propose a mixed-integer linear programming formulation to determine the placement of firebreaks, taking into account both the minimization of the expected loss due to wildfires and the expected loss in worst-case scenarios measured based on the Conditional Value-at-Risk function. We assess the effectiveness of our proposed solutions by comparing their performance with random plans, where our preliminary numerical results indicate an average reduction of 5\% and 9\% in the expected burned area and the average of the 10\% most intense wildfires, respectively.
+    Wildfire prevention requires strategic firebreak placement decisions that account for uncertainty in fire ignition and propagation, as well as the potentially severe consequences of extreme events. We formulate the Firebreak Placement Problem as a risk-averse two-stage stochastic program that minimizes a weighted combination of expected wildfire loss and Conditional Value-at-Risk (CVaR). Wildfire scenarios generated using Cell2Fire are represented by directed propagation graphs, enabling the evaluation of firebreak placements under different propagation patterns. To solve the resulting stochastic optimization problem, we develop an exact Branch-and-Benders decomposition framework strengthened by two families of graph-based valid inequalities exploiting downstream coverage and directed propagation paths. We establish their validity for general directed graphs and show that the complete family of path-based inequalities characterizes the linear programming recourse function for fractional firebreak decisions. Computational experiments demonstrate that the path-strengthened algorithm achieves the highest overall optimality certification rate (84.9\%), compared with 77.3\% for a state-of-the-art combinatorial Branch-and-Benders approach and 63.6\% for the extensive mixed-integer formulation. 
 \end{abstract}
 
 
 \begin{keywords}
-Firebreak placement \sep Spatially-explicit fire scenarios \sep Two-stage stochastic programming \sep Wildfire simulation \sep Widlfire management
+Firebreak placement \sep
+Two-stage stochastic programming \sep
+Conditional Value-at-Risk \sep
+Branch-and-Benders decomposition \sep
+Graph-based valid inequalities
+\sep Spatially-explicit fire scenarios \sep 
+ Wildfire simulation \sep Widlfire management
 \end{keywords}
 
 
@@ -2030,7 +2032,7 @@ to optimizing firebreak placement under uncertainty and risk aversion.
 
 
 \section*{Acknowledgments}
-This project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101037419 (\href{https://fire-res.eu}{FIRE-RES}) and the Complex Engineering Systems Institute (CONICYT-PIA-FB0816). \textbf{JC} acknowledges the support of the ANID through funding Postdoctoral Fondecyt project No 3210311. Also, the authors gratefully acknowledge the research support provided by Dicyt project 062217DG, Vicerrector\'ia de Investigaci\'on, Desarrollo e Innovaci\'on, Universidad de Santiago de Chile.
+This project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101037419 (\href{https://fire-res.eu}{FIRE-RES}) and the Complex Engineering Systems Institute (CONICYT-PIA-FB0816). \textbf{JC} acknowledges the support of the ANID through funding Postdoctoral Fondecyt project No 3210311. Also, the authors gratefully acknowledge the research support provided by Dicyt project 062217DG, Vicerrector\'ia de Investigaci\'on, Desarrollo e Innovaci\'on, Universidad de Santiago de Chile. The authors gratefully acknowledge the contributions of David Palacios and Andr\'es Weintraub to earlier versions of this manuscript.
 
 \bibliographystyle{cas-model2-names}
 
