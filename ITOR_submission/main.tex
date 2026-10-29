@@ -1611,121 +1611,123 @@ out-of-sample analysis uses B\&B-III to evaluate firebreak placements obtained t
 
 We evaluate the B\&B-III placements obtained from 30 independent scenario
 samples for each $(n,\alpha,\lambda)$ configuration on a common set of
-1,000 independent wildfire scenarios. Let $\widehat\mu(Y)$ and
-$\widehat C_{0.9}(Y)$ denote the expected loss and CVaR evaluated on this
-test set, using the definitions in Section~\ref{sec2}. We report the
-risk-weighted objective $\widehat F_\lambda(Y)=
-\lambda\widehat\mu(Y)+(1-\lambda)\widehat C_{0.9}(Y)$.
-Spatial stability is measured by the Jaccard index
-$J(Y_a,Y_b)=|Y_a\cap Y_b|/|Y_a\cup Y_b|$ over
-$\binom{30}{2}=435$ placement pairs per configuration.
-Table~\ref{tab:new20-oos-stability} summarizes performance,
-variability, optimality certification, and spatial similarity.
-All feasible placements are included, even when optimality is not
-certified; pairwise similarities are not independent replications.
+1,000 independent wildfire scenarios. Their out-of-sample expected loss
+$\widehat\mu(Y)$, CVaR $\widehat C_{0.9}(Y)$, and risk-weighted objective
+$\widehat F_\lambda(Y)=\lambda\widehat\mu(Y)
++(1-\lambda)\widehat C_{0.9}(Y)$ are computed using the definitions
+in Section~\ref{sec2}. To assess spatial stability, we use the Jaccard
+index $J(Y_a,Y_b)=|Y_a\cap Y_b|/|Y_a\cup Y_b|$ and the optimal
+matching distance
+\[
+D(Y_a,Y_b)=\frac{1}{k}\min_{\pi\in S_k}
+\sum_{i=1}^{k}\|x_{u_i}-x_{v_{\pi(i)}}\|_2,
+\]
+where $Y_a=\{u_1,\ldots,u_k\}$ and $Y_b=\{v_1,\ldots,v_k\}$
+are placements of $k$ firebreak cells and $x_v$ denotes the
+grid coordinates of cell $v$. The distance measures the minimum
+average separation between matched firebreak locations, expressed
+in grid-cell widths. Both metrics are averaged over the
+$\binom{30}{2}=435$ placement pairs within each configuration.
+Table~\ref{tab:new20-oos-stability} reports held-out performance
+and placement stability. All feasible placements are included,
+even when optimality is not certified; the pairwise comparisons
+are not independent replications.
 
 \begin{table}[!htbp]
 \centering
 \caption{Out-of-sample performance and spatial stability of B\&B-III
-placements. Each configuration has 30 solutions evaluated on the same
-1,000 independent wildfire scenarios. The columns $\widehat\mu$ and
-$\widehat C_{0.9}$ give the means across placements, while
-$\widehat F_\lambda$ gives its mean and sample standard deviation (SD).
-Optimal (\%) is the proportion of sampled problems solved to a relative
-MIP gap of at most $10^{-3}$ with an optimal solver status.
-$\overline J$ is the mean Jaccard similarity over 435 placement pairs.}
+placements from 30 independent solutions per configuration, evaluated
+on a common 1,000-scenario test set. The columns $\widehat\mu$ and
+$\widehat C_{0.9}$ give mean losses, while $\widehat F_\lambda$
+reports its mean and sample standard deviation (SD).
+Optimal (\%) is the percentage of solutions certified optimal.
+$\overline J$ and $\overline D$ are the mean pairwise Jaccard
+similarity and optimal matching distance, respectively;
+the latter is expressed in grid-cell widths.}
 \label{tab:new20-oos-stability}
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.07}
-\begin{tabular}{@{}ccc r r r r r@{}}
+\begin{tabular}{@{}ccc r r r r r r@{}}
 \toprule
-$\lambda$ & $\alpha$ & $n$ & $\widehat\mu$ & $\widehat C_{0.9}$ & $\widehat F_\lambda$ (mean, SD) & Optimal (\%) & $\overline J$ \\
+$\lambda$ & $\alpha$ & $n$ & $\widehat\mu$ & $\widehat C_{0.9}$ & $\widehat F_\lambda$ (mean, SD) & Optimal (\%) & $\overline J$ & $\overline D$ \\
 \midrule
-\multirow{9}{*}{$1$} & \multirow{3}{*}{$0.01$} & 100 & 134.74 & 282.14 & 134.74 (1.58) & 100.0 & 0.37 \\
- &  & 200 & 133.59 & 284.95 & 133.59 (0.98) & 100.0 & 0.49 \\
- &  & 400 & 133.04 & 284.55 & 133.04 (0.56) & 100.0 & 0.61 \\
-\cmidrule(l){2-8}
- & \multirow{3}{*}{$0.02$} & 100 & 93.46 & 209.20 & 93.46 (2.12) & 100.0 & 0.42 \\
- &  & 200 & 91.92 & 205.35 & 91.92 (1.30) & 100.0 & 0.54 \\
- &  & 400 & 91.59 & 204.48 & 91.59 (0.99) & 100.0 & 0.60 \\
-\cmidrule(l){2-8}
- & \multirow{3}{*}{$0.03$} & 100 & 75.69 & 163.48 & 75.69 (1.47) & 100.0 & 0.40 \\
- &  & 200 & 74.28 & 155.66 & 74.28 (0.76) & 100.0 & 0.45 \\
- &  & 400 & 73.99 & 154.00 & 73.99 (0.58) & 100.0 & 0.49 \\
+\multirow{9}{*}{$1$} & \multirow{3}{*}{$0.01$} & 100 & 134.74 & 282.14 & 134.74 (1.58) & 100.0 & 0.37 & 2.09 \\
+ &  & 200 & 133.59 & 284.95 & 133.59 (0.98) & 100.0 & 0.49 & 1.36 \\
+ &  & 400 & 133.04 & 284.55 & 133.04 (0.56) & 100.0 & 0.61 & 1.06 \\
+\cmidrule(l){2-9}
+ & \multirow{3}{*}{$0.02$} & 100 & 93.46 & 209.20 & 93.46 (2.12) & 100.0 & 0.42 & 1.31 \\
+ &  & 200 & 91.92 & 205.35 & 91.92 (1.30) & 100.0 & 0.54 & 0.87 \\
+ &  & 400 & 91.59 & 204.48 & 91.59 (0.99) & 100.0 & 0.60 & 0.59 \\
+\cmidrule(l){2-9}
+ & \multirow{3}{*}{$0.03$} & 100 & 75.69 & 163.48 & 75.69 (1.47) & 100.0 & 0.40 & 1.69 \\
+ &  & 200 & 74.28 & 155.66 & 74.28 (0.76) & 100.0 & 0.45 & 1.02 \\
+ &  & 400 & 73.99 & 154.00 & 73.99 (0.58) & 100.0 & 0.49 & 0.83 \\
 \midrule
-\multirow{9}{*}{$0.5$} & \multirow{3}{*}{$0.01$} & 100 & 135.74 & 275.03 & 205.38 (3.62) & 100.0 & 0.34 \\
- &  & 200 & 135.64 & 269.72 & 202.68 (1.96) & 100.0 & 0.39 \\
- &  & 400 & 136.61 & 269.82 & 203.22 (2.17) & 100.0 & 0.41 \\
-\cmidrule(l){2-8}
- & \multirow{3}{*}{$0.02$} & 100 & 98.21 & 201.16 & 149.68 (5.41) & 100.0 & 0.23 \\
- &  & 200 & 97.00 & 194.35 & 145.68 (2.36) & 100.0 & 0.31 \\
- &  & 400 & 95.66 & 191.47 & 143.56 (1.50) & 96.7 & 0.39 \\
-\cmidrule(l){2-8}
- & \multirow{3}{*}{$0.03$} & 100 & 77.25 & 154.72 & 115.99 (3.49) & 96.7 & 0.35 \\
- &  & 200 & 75.79 & 150.50 & 113.14 (1.81) & 83.3 & 0.42 \\
- &  & 400 & 75.14 & 149.94 & 112.54 (1.46) & 13.3 & 0.47 \\
+\multirow{9}{*}{$0.5$} & \multirow{3}{*}{$0.01$} & 100 & 135.74 & 275.03 & 205.38 (3.62) & 100.0 & 0.34 & 1.91 \\
+ &  & 200 & 135.64 & 269.72 & 202.68 (1.96) & 100.0 & 0.39 & 1.63 \\
+ &  & 400 & 136.61 & 269.82 & 203.22 (2.17) & 100.0 & 0.41 & 1.82 \\
+\cmidrule(l){2-9}
+ & \multirow{3}{*}{$0.02$} & 100 & 98.21 & 201.16 & 149.68 (5.41) & 100.0 & 0.23 & 1.97 \\
+ &  & 200 & 97.00 & 194.35 & 145.68 (2.36) & 100.0 & 0.31 & 1.51 \\
+ &  & 400 & 95.66 & 191.47 & 143.56 (1.50) & 96.7 & 0.39 & 1.16 \\
+\cmidrule(l){2-9}
+ & \multirow{3}{*}{$0.03$} & 100 & 77.25 & 154.72 & 115.99 (3.49) & 96.7 & 0.35 & 1.49 \\
+ &  & 200 & 75.79 & 150.50 & 113.14 (1.81) & 83.3 & 0.42 & 1.09 \\
+ &  & 400 & 75.14 & 149.94 & 112.54 (1.46) & 13.3 & 0.47 & 1.02 \\
 \midrule
-\multirow{9}{*}{$0$} & \multirow{3}{*}{$0.01$} & 100 & 141.49 & 274.86 & 274.86 (9.22) & 100.0 & 0.25 \\
- &  & 200 & 139.83 & 269.70 & 269.70 (5.09) & 100.0 & 0.32 \\
- &  & 400 & 139.80 & 268.22 & 268.22 (2.38) & 100.0 & 0.49 \\
-\cmidrule(l){2-8}
- & \multirow{3}{*}{$0.02$} & 100 & 100.69 & 199.19 & 199.19 (6.82) & 96.7 & 0.20 \\
- &  & 200 & 99.30 & 194.96 & 194.96 (5.04) & 100.0 & 0.28 \\
- &  & 400 & 98.87 & 192.63 & 192.63 (2.59) & 30.0 & 0.32 \\
-\cmidrule(l){2-8}
- & \multirow{3}{*}{$0.03$} & 100 & 81.02 & 157.05 & 157.05 (7.80) & 56.7 & 0.30 \\
- &  & 200 & 78.90 & 148.98 & 148.98 (3.17) & 16.7 & 0.38 \\
- &  & 400 & 78.81 & 148.07 & 148.07 (2.47) & 3.3 & 0.43 \\
+\multirow{9}{*}{$0$} & \multirow{3}{*}{$0.01$} & 100 & 141.49 & 274.86 & 274.86 (9.22) & 100.0 & 0.25 & 2.52 \\
+ &  & 200 & 139.83 & 269.70 & 269.70 (5.09) & 100.0 & 0.32 & 2.31 \\
+ &  & 400 & 139.80 & 268.22 & 268.22 (2.38) & 100.0 & 0.49 & 1.70 \\
+\cmidrule(l){2-9}
+ & \multirow{3}{*}{$0.02$} & 100 & 100.69 & 199.19 & 199.19 (6.82) & 96.7 & 0.20 & 2.12 \\
+ &  & 200 & 99.30 & 194.96 & 194.96 (5.04) & 100.0 & 0.28 & 1.73 \\
+ &  & 400 & 98.87 & 192.63 & 192.63 (2.59) & 30.0 & 0.32 & 1.48 \\
+\cmidrule(l){2-9}
+ & \multirow{3}{*}{$0.03$} & 100 & 81.02 & 157.05 & 157.05 (7.80) & 56.7 & 0.30 & 1.70 \\
+ &  & 200 & 78.90 & 148.98 & 148.98 (3.17) & 16.7 & 0.38 & 1.30 \\
+ &  & 400 & 78.81 & 148.07 & 148.07 (2.47) & 3.3 & 0.43 & 1.20 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 Increasing the number of optimization scenarios generally improves
-out-of-sample performance and reduces variability, with smaller gains
-between $n=200$ and $n=400$. For $\alpha=0.02$ and $\lambda=1$,
-mean expected loss decreases from 93.46 to 91.92 and 91.59 burned cells
-as $n$ increases from 100 to 200 and 400, while its standard deviation
-falls from 2.12 to 0.99. Under $\lambda=0.5$, the mean--CVaR objective
-decreases from 149.68 to 143.56, with its standard deviation falling
-from 5.41 to 1.50. For $\alpha=0.01$ and $\lambda=0$, the CVaR
-standard deviation falls from 9.22 to 2.38, and the difference between
-mean in-sample and out-of-sample CVaR narrows from 20.92 to 5.46 as
-$n$ increases from 100 to 400. Comparisons across sample sizes use
-independent rather than nested scenario samples.
+out-of-sample stability, with smaller gains beyond $n=200$.
+At $\alpha=0.02$ and $\lambda=0.5$, the standard deviation of
+the out-of-sample objective decreases from 5.41 to 1.50 as
+$n$ increases from 100 to 400. Under CVaR minimization with
+$\alpha=0.01$, the difference between mean in-sample and
+out-of-sample CVaR decreases from 20.92 to 5.46, consistent
+with reduced sampling optimism at larger sample sizes.
 
-Spatial similarity increases with sample size in all nine
-$(\alpha,\lambda)$ settings. At $\alpha=0.02$, mean Jaccard similarity
-rises from 0.42 to 0.60 for $\lambda=1$ and from 0.20 to 0.32 for
-$\lambda=0$ as $n$ increases from 100 to 400. However, spatial
-stability does not necessarily imply better objective values: at
-$(\alpha,\lambda)=(0.01,0.5)$, similarity rises from 0.39 to 0.41
-between $n=200$ and $n=400$, while the out-of-sample objective
-increases slightly from 202.68 to 203.22. Moreover, unresolved
-optimization gaps may affect spatial stability: at
-$(n,\alpha)=(400,0.03)$, only 1 of 30 CVaR and 4 of 30 mean--CVaR
-problems are certified optimal.
+Larger scenario samples also lead to geographically more consistent
+firebreak placements. Across all nine $(\alpha,\lambda)$ settings,
+mean Jaccard similarity increases and mean optimal matching
+distance decreases between $n=100$ and $n=400$. At $\alpha=0.02$,
+expected-loss placements exhibit an increase in Jaccard similarity
+from 0.42 to 0.60 and a decrease in matching distance from
+1.31 to 0.59 grid-cell widths. Thus, placements that differ in
+their exact selected cells can remain geographically close.
+Risk-sensitive solutions exhibit greater spatial variability.
+At $(n,\alpha)=(400,0.02)$, the mean matching distance is 1.16
+for mean--CVaR and 1.48 for CVaR, compared with 0.59 under
+expected-loss minimization. The persistence of spatial variation
+alongside relatively stable out-of-sample losses suggests that
+different placements can provide comparable protection.
+Unresolved optimization gaps in the most challenging
+risk-sensitive configurations may also contribute to this variation.
 
-Increasing firebreak intensity reduces held-out wildfire losses,
-although marginal improvements diminish over the tested range.
-For $\lambda=1$ and $n=400$, mean expected burned area decreases
-from 133.04 cells at $\alpha=0.01$ to 91.59 at $\alpha=0.02$
-and 73.99 at $\alpha=0.03$. The second budget increment therefore
-provides a smaller additional reduction. This is an empirical
-observation for the tested landscape, not a general property of
-the model.
-
-Risk preferences create a trade-off between average and tail losses.
-At $(n,\alpha)=(200,0.02)$, expected-loss optimization ($\lambda=1$)
-gives mean out-of-sample loss 91.92 and CVaR 205.35, whereas
-the balanced objective ($\lambda=0.5$) gives 97.00 and 194.35:
-a 5.4\% CVaR reduction at the cost of a 5.5\% increase in expected
-loss. Pure CVaR minimization ($\lambda=0$) gives 99.30 and 194.96,
-indicating comparable tail protection but higher average loss than
-the balanced solution in this configuration, without establishing
-general dominance. The mean Jaccard similarity between balanced
-and CVaR placements is 0.60, compared with 0.32 between expected-loss
-and CVaR placements, showing that the balanced solutions select
-locations closer to those favored by pure CVaR minimization.
+Risk preferences affect both out-of-sample losses and the locations
+of selected firebreaks. At $(n,\alpha)=(200,0.02)$, the balanced
+objective ($\lambda=0.5$) reduces CVaR by 5.4\% relative to
+expected-loss minimization, at the cost of a 5.5\% increase in
+expected loss. It also achieves tail-risk performance comparable
+to pure CVaR minimization while retaining lower expected loss.
+For corresponding scenario samples, balanced and CVaR placements
+have a mean Jaccard similarity of 0.60 and matching distance of
+0.83 grid-cell widths, compared with 0.32 and 2.21 between
+expected-loss and CVaR placements. The balanced objective thus
+produces firebreak locations geographically closer to those
+favored by CVaR minimization.
 
 % \subsection{Out-of-sample stability of SAA solutions}\label{sec:oos-stability}
 
