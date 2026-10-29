@@ -25,18 +25,20 @@
 \begin{document}
 \title{A risk-averse two-stage stochastic firebreak placement problem:
 Graph-based valid inequalities and exact decomposition}
-\author[Vilches et al.]{Mat\'ias Vilches\affmark{a}, Franco Quezada\affmark{a,b,$\ast$}, Sebasti\'an D\'avila-G\'alvez\affmark{a,b} and Jaime Carrasco\affmark{c,d}}
+
+\author[Quezada et al.]{Franco Quezada\affmark{a,b,$\ast$}, Mat\'ias Vilches\affmark{a}, Sebasti\'an D\'avila-G\'alvez\affmark{a,b} and Jaime Carrasco\affmark{c,d}}
+
 \affil{\affmark{a}Industrial Engineering Department, Faculty of Engineering, University of Santiago of Chile, Santiago, Chile}
 \affil{\affmark{b}Program for the Development of Sustainable Production Systems, Faculty of Engineering, University of Santiago of Chile, Santiago, Chile}
 \affil{\affmark{c}Departamento de Industria, Facultad de Ingenier\'ia, Universidad Tecnol\'ogica Metropolitana, Santiago, Chile}
 \affil{\affmark{d}Complex Engineering Systems Institute -- ISCI, Santiago, Chile}
-\email{matias.vilches.a@usach.cl [M. Vilches]; franco.quezada@usach.cl [F. Quezada];\\ sebastian.davila@usach.cl [S. D\'avila-G\'alvez]; jcarrascob@utem.cl [J. Carrasco]}
+\email{franco.quezada@usach.cl [F. Quezada];matias.vilches.a@usach.cl [M. Vilches];\\ sebastian.davila@usach.cl [S. D\'avila-G\'alvez]; jcarrascob@utem.cl [J. Carrasco]}
 \thanks{\affmark{$\ast$}Corresponding author: franco.quezada@usach.cl.}
 
 \begin{abstract}
-Wildfire prevention requires strategic firebreak placement decisions that account for uncertainty in fire ignition and propagation, as well as the potentially severe consequences of extreme events. We formulate the Firebreak Placement Problem as a risk-averse two-stage stochastic program that minimizes a weighted combination of expected wildfire loss and Conditional Value-at-Risk (CVaR). Wildfire scenarios generated using Cell2Fire are represented by directed propagation graphs, enabling the evaluation of firebreak placements under different propagation patterns. To solve the resulting stochastic optimization problem, we develop an exact Branch-and-Benders decomposition framework strengthened by two families of graph-based valid inequalities exploiting downstream coverage and directed propagation paths. We establish their validity for general directed graphs and show that the complete family of path-based inequalities characterizes the linear programming recourse function for fractional firebreak decisions. Computational experiments on 810 instances demonstrate that the path-strengthened algorithm achieves the highest overall optimality certification rate (84.9\%), compared with 77.3\% for a state-of-the-art combinatorial Branch-and-Benders approach and 63.6\% for the extensive mixed-integer formulation. Its computational advantages are particularly pronounced under risk-sensitive objectives, while the combinatorial benchmark is faster under expected-loss minimization. Out-of-sample evaluations further examine the effects of scenario sample size, firebreak intensity, and risk preferences on solution quality and stability.
+Firebreak placement must account for uncertainty in wildfire ignition and propagation and the consequences of extreme events. We formulate the Firebreak Placement Problem as a risk-averse two-stage stochastic program minimizing a weighted combination of expected loss and Conditional Value-at-Risk (CVaR). Wildfire scenarios from Cell2Fire are represented by directed propagation graphs. We develop an exact Branch-and-Benders decomposition framework strengthened by two families of graph-based valid inequalities exploiting downstream coverage and propagation paths. We prove their validity for general directed graphs and show that the complete path-based family characterizes the linear programming recourse function under fractional firebreak decisions. Experiments on 810 instances show that the path-strengthened algorithm achieves an optimality certification rate of 84.9\%, compared with 77.3\% for a combinatorial Branch-and-Benders benchmark and 63.6\% for the extensive mixed-integer formulation. Its advantages are strongest under risk-sensitive objectives, while the combinatorial benchmark is faster for expected-loss minimization. 
 \end{abstract}
-\keywords{Firebreak placement; Two-stage stochastic programming; Conditional Value-at-Risk; Branch-and-Benders decomposition; Graph-based valid inequalities}
+\keywords{Firebreak placement; Two-stage stochastic programming; Conditional Value-at-Risk; Branch-and-Benders decomposition; Graph-based valid inequalities; }
 \maketitle
 
 \section{Introduction}
@@ -415,7 +417,7 @@ $\bar{\Phi}(\vb{y}^2,\vb{1})=73$.
 Thus, $\vb{y}^2$ provides greater protection
 than $\vb{y}^1$ for the illustrated scenario.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[scale=.5]{figs/example1_sub20_and_weather.pdf}
 \vspace{1ex}
@@ -425,7 +427,7 @@ landscape and an example wildfire;
 \label{fig:graphs_landscape}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \includegraphics[scale=.5]{figs/example2_efficients_firebreaks.pdf}
 \vspace{1ex}
@@ -435,7 +437,7 @@ Configuration \textbf{B} prevents more cells
 from burning than configuration \textbf{A}.}
 \label{fig:graphs}
 \end{figure}
-\FloatBarrier
+
 
 \subsection{Conditional Value-at-Risk}
 
@@ -650,6 +652,7 @@ $\eta^\omega$ to linearize the CVaR term.
 
 The resulting formulation is given by
 %
+\allowdisplaybreaks{
 \begin{subequations}
 \label{m:fpp}
 \begin{align}
@@ -714,7 +717,7 @@ v\in\mathcal{V}^\omega.
 \label{c:variables}
 \end{align}
 \end{subequations}
-
+}
 The objective function \eqref{fo:min_expected4} minimizes
 a convex combination of expected wildfire loss and CVaR.
 When $\lambda=1$, the formulation minimizes expected loss,
@@ -968,9 +971,7 @@ One limitation of the Branch-and-Benders framework is that weak initial approxim
 
 A lower bound on the scenario recourse cost can be obtained by estimating the maximum protection that a firebreak configuration could provide. The underlying idea is to identify the cells potentially protected by each firebreak and subtract their associated values from the wildfire loss without intervention. Since this estimate may overstate the actual protection, the resulting expression provides a lower bound on the recourse cost.
 
-For each scenario $\omega \in \Omega$, let $R^\omega(\vb{y})$ denote the set of cells reachable from the ignition node $v(\omega)$ under a binary firebreak configuration $\vb{y}$. In particular, $R^\omega(\vb{0})$ represents the cells burned in the absence of firebreaks.
-
-For each $v \in R^\omega(\vb{0}) \setminus \{v(\omega)\}$, we define its downstream set as
+For each scenario $\omega \in \Omega$, let $R^\omega(\vb{y})$ denote the set of cells reachable from the ignition node $v(\omega)$ under a binary firebreak configuration $\vb{y}$. In particular, $R^\omega(\vb{0})$ represents the cells burned in the absence of firebreaks. For each $v \in R^\omega(\vb{0}) \setminus \{v(\omega)\}$, we define its downstream set as
 %
 \begin{equation}
 \label{eq:downstream_set}
@@ -1031,7 +1032,7 @@ $k \in D^\omega(v_j)$. Since $y_v \geq 0$, we obtain $x_k^\omega \geq
 Q^\omega(\vb{y})
 &\geq
 \sum_{k \in U}w_k x_k^\omega
-\nonumber\\
+\nonumber
 &\geq
 \sum_{k \in U}w_k
 \left(
@@ -1039,7 +1040,7 @@ Q^\omega(\vb{y})
 \sum_{\substack{v \in \mathcal{V}:\\
 k \in D^\omega(v)}}y_v
 \right)
-\nonumber\\
+\nonumber
 &=
 \sum_{k \in U}w_k
 -
@@ -1155,10 +1156,10 @@ every feasible second-stage solution satisfies
 %
 \begin{align*}
 \sum_{k \in \mathcal{V}^\omega}w_k x_k^\omega
-&\geq
+\geq
 \sum_{k \in U}w_k x_k^\omega
-\nonumber\\
-&\geq
+\nonumber
+\geq
 \sum_{k \in U}w_k
 -
 \sum_{k \in U}w_k
@@ -1236,8 +1237,8 @@ $\sum_{\substack{v\in\mathcal V: k\in D^\omega(v)}}\bar y_v<1$. Thus, the strong
 identified without enumerating the subsets of
 $R^\omega(\vb{0})$. Algorithm~\ref{alg:separate_coverage}
 summarizes this procedure.
-
-\begin{algorithm}[h]
+\allowdisplaybreaks{
+\begin{algorithm}[htbp]
 \caption{Separation of \eqref{eq:coverage_projected}}
 \label{alg:separate_coverage}
 \begin{algorithmic}[1]
@@ -1275,7 +1276,7 @@ downstream sets $D^\omega(v)$, tolerance $\varepsilon$
 \State \Return $\emptyset$
 \end{algorithmic}
 \end{algorithm}
-
+}
 
 Separation of \eqref{eq:path-proj} requires identifying a
 propagation path for each cell. Since the number of directed
@@ -1298,7 +1299,8 @@ A cell contributes to the resulting inequality only if
 this minimum cost is strictly less than one. Algorithm~\ref{alg:separate_paths} describes the separation
 procedure.
 
-\begin{algorithm}[t]
+\allowdisplaybreaks{
+\begin{algorithm}[htbp]
 \caption{Separation of \eqref{eq:path-proj}}
 \label{alg:separate_paths}
 \begin{algorithmic}[1]
@@ -1344,11 +1346,10 @@ path limit $P_{\max}$, tolerance $\varepsilon$
     $\displaystyle\theta^\omega\geq
     a^\omega-\sum_{v\in\mathcal V}c_v^\omega y_v$
 \EndIf
-
 \State \Return $\emptyset$
 \end{algorithmic}
 \end{algorithm}
-
+}
 The two procedures differ in the information used to
 construct their inequalities. Algorithm~\ref{alg:separate_coverage}
 uses the downstream sets of candidate firebreak locations
@@ -1400,7 +1401,7 @@ cuts without solving scenario LPs. The distinguishing
 features of the methods are summarized in
 Table~\ref{tab:methods}.
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \normalfont
 \caption{Optimization methods considered in the computational experiments.}
@@ -1447,7 +1448,7 @@ combinatorial procedures without solving scenario LPs.
 
 All experiments were conducted using IBM ILOG CPLEX Optimization
 Studio 22.1.1, with one thread, a time limit of 1,800 seconds, and
-a relative MIP optimality gap tolerance of $10^{-3}$. Apart from these settings and the method-specific cut-generation procedures, default CPLEX parameters were retained.
+a relative MIP optimality gap tolerance of $10^{-3}$. Apart from these settings and the method-specific cut-generation procedures, default CPLEX parameters were retained. The source code implementing the proposed algorithms and computational experiments is publicly available at \url{https://github.com/FrancoQuezada/stochastic-firebreak-placement}.
 
 Computational performance is assessed through solution times,
 final optimality gaps, and the percentage of instances certified
@@ -1466,23 +1467,12 @@ risk preferences.
 
 \subsection{Algorithmic performance}\label{sec:results}
 
-Table~\ref{tab:new20-gaps-times} compares optimality certification rates,
-final optimality gaps, and running times for the six methods across the
-three risk preferences, using 270 instances per setting.
-Figure~\ref{fig:alg-performance} complements these aggregates with
-certification-time and final-gap profiles.
+Table~\ref{tab:new20-gaps-times} compares the six methods across the three risk-weighting settings. For each method and risk setting, the proportion of instances solved to optimality is calculated over 270 instances. Reported optimality gaps and solver times include both optimal and time-limited instances. 
 
-\begin{center}
-\begin{minipage}{\linewidth}
-\centering
-
-\captionof{table}{Algorithmic performance on 270 instances per method and value of $\lambda$. 
-Mean and maximum final gaps are reported in percent, and mean observed solver time in seconds.}
-\label{tab:new20-gaps-times}
-
-\setlength{\tabcolsep}{5pt}
-\renewcommand{\arraystretch}{1.08}
-
+\begin{table}[htbp]
+    \centering
+    \caption{Algorithmic performance on 270 instances per method and value of $\lambda$. Mean and maximum final gaps are reported in percent, and mean observed solver time in seconds.}
+    \label{tab:new20-gaps-times}
 \begin{tabular}{@{}clrrrr@{}}
 \toprule
 $\lambda$ & Method & Optimal (\%) & Mean gap (\%) & Max. gap (\%) & Mean time (s) \\
@@ -1512,36 +1502,45 @@ $\lambda$ & Method & Optimal (\%) & Mean gap (\%) & Max. gap (\%) & Mean time (s
  & CB\&B     & 53.3 & 3.02 & 18.08 & 1057.5 \\
 \bottomrule
 \end{tabular}
-\end{minipage}
-\end{center}
+\end{table}
 
-Under expected-loss minimization ($\lambda=1$), MILP, B\&B-III,
-and CB\&B certify all 270 instances. CB\&B is the fastest, with a mean
-running time of 28.4\,s, compared with 71.3\,s for B\&B-III and
-178.4\,s for MILP. This advantage is consistent with its direct
-evaluation of wildfire losses by graph reachability, avoiding LP
-scenario subproblems. The profiles in Figure~\ref{fig:alg-expected}
-confirm that CB\&B certifies most instances earlier. Nevertheless,
-B\&B-III solves all instances in less than half the mean time of MILP.
+For expected-loss minimization ($\lambda=1$), MILP, B\&B-III, and CB\&B
+solve all 270 instances to optimality. CB\&B achieves the lowest mean
+computational time (28.4\,s), followed by B\&B-III (71.3\,s) and MILP
+(178.4\,s). The advantage of CB\&B is consistent with its combinatorial
+treatment of the scenario subproblems. For a fixed firebreak placement,
+wildfire losses can be evaluated directly through graph reachability,
+allowing CB\&B to generate optimality cuts without repeatedly solving
+linear programming subproblems. Moreover, under expected-loss
+minimization, scenario losses contribute linearly to the objective,
+without the additional constraints associated with CVaR. This
+combination may explain the efficiency of combinatorial cut generation
+in this setting. As shown in Figure~\ref{fig:alg-expected},
+CB\&B reaches a high proportion of optimal solutions considerably
+earlier than the other methods. Nevertheless, B\&B-III also solves
+every instance to optimality and requires less than half the average
+computational time of MILP, demonstrating the effectiveness of the
+proposed decomposition framework.
 
-The comparison of decomposition variants reveals the importance
-of stronger recourse approximations. The static inequality
-\eqref{eq:llbi} used by B\&B-I offers no consistent improvement
-over standard B\&B. In contrast, dynamically separated coverage
-inequalities \eqref{eq:coverage_projected} increase the expected-loss
-certification rate from 65.2\% with B\&B to 95.6\% with B\&B-II.
-Path-based inequalities \eqref{eq:path-proj} in B\&B-III increase
-it further to 100\%. Unlike downstream coverage estimates, path
-inequalities account for alternative propagation routes, limiting
-overly optimistic recourse estimates when several routes reach the
-same cell. This stronger approximation can offset the additional
-separation effort and is particularly valuable under risk-sensitive
-objectives.
+The comparison among the Branch-and-Benders variants highlights the
+importance of strengthening the scenario recourse approximations.
+Adding the static inequality \eqref{eq:llbi} in
+B\&B-I provides limited and inconsistent improvements
+over the standard B\&B approach. This limited effect is consistent
+with the construction of the inequality, which may substantially
+underestimate scenario losses when downstream sets overlap.
+In contrast, B\&B-II dynamically separates
+\eqref{eq:coverage_projected}, selecting the cells that contribute
+positively to the lower bound at the current fractional solution.
+This produces a more informative approximation of the recourse
+function and substantially improves computational performance.
+For instance, under expected loss, the proportion of optimal
+solutions increases from 65.2\% with B\&B to 95.6\% with B\&B-II.
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
 \centering
 % (a) Expected loss
-\begin{subfigure}{0.8\linewidth}
+\begin{subfigure}{0.7\linewidth}
     \centering
     \includegraphics[width=\linewidth]
     {figs/profile_20x20_Expected_N100_200_400_all_alpha_no_poly_balanced_fonts.png}
@@ -1550,7 +1549,7 @@ objectives.
 \end{subfigure}
 % \vspace{0.15cm}
 % (c) Mean-CVaR
-\begin{subfigure}{0.8\linewidth}
+\begin{subfigure}{0.7\linewidth}
     \centering
     \includegraphics[width=\linewidth]
     {figs/profile_20x20_MeanCVaR_N100_200_400_all_alpha_no_poly_balanced_fonts.png}
@@ -1558,7 +1557,7 @@ objectives.
     \label{fig:alg-mean-cvar}
 \end{subfigure}
 % (b) CVaR
-\begin{subfigure}{0.8\linewidth}
+\begin{subfigure}{0.7\linewidth}
     \centering
     \includegraphics[width=\linewidth]    {figs/profile_20x20_CVaR_N100_200_400_all_alpha_no_poly_balanced_fonts.png}
     \caption{CVaR ($\lambda=0.0$).}
@@ -1569,60 +1568,36 @@ objectives.
 \label{fig:alg-performance}
 \end{figure}
 
-Under pure CVaR minimization ($\lambda=0$), B\&B-III certifies
-67.0\% of instances, compared with 53.3\% for CB\&B and 50.0\%
-for B\&B-II. It also attains the lowest mean final gap (1.44\%)
-and running time (850.2\,s). Figure~\ref{fig:alg-cvar} shows that
-B\&B-II initially certifies instances faster, but B\&B-III
-eventually overtakes it, indicating a stronger advantage on
-difficult instances. Since CVaR emphasizes adverse scenario
-losses, tighter scenario-level recourse bounds provide more
-effective information for the master problem. The benefits
-therefore extend beyond faster certification to improved
-final bounds on the instances left unresolved.
+B\&B-III achieves further improvements by exploiting explicit propagation paths through inequalities \eqref{eq:path-proj}. Unlike downstream sets, which identify cells potentially protected by a firebreak, propagation paths provide information about the
+alternative routes through which fire can reach a destination. This distinction is particularly relevant in graphs containing multiple propagation routes, where treating a cell does not necessarily prevent fire from reaching its downstream vertices. By accounting for these routes, the inequalities can provide tighter
+lower bounds on scenario losses. Indeed, the complete family \eqref{eq:path-proj} characterizes the fractional recourse function, although the implemented separation procedure considers only a restricted collection of paths. The computational advantage of
+B\&B-III is consistent with these stronger recourse approximations,
+which can compensate for the additional effort required to
+generate the inequalities.
 
-With mean--CVaR ($\lambda=0.5$), B\&B-III certifies 87.8\%
-of instances, versus 78.5\% for CB\&B and 65.2\% for B\&B-II.
-Its mean final gap is 0.39\%, compared with 0.89\% for CB\&B,
-while mean running time falls from 697.8\,s to 461.1\,s.
-The final-gap profiles in Figure~\ref{fig:alg-mean-cvar}
-further show that B\&B-III maintains tight bounds even for
-instances without optimality certification. Thus, path-based
-strengthening remains effective when average and tail losses
-are considered jointly.
+The benefits of B\&B-III become particularly pronounced when tail risk is incorporated into the objective. Under CVaR minimization ($\lambda=0$), B\&B-III solves 67.0\% of instances to optimality, compared with 53.3\% for CB\&B and 50.0\% for B\&B-II. It also achieves the lowest mean optimality gap (1.44\%) and computational time (850.2\,s). Unlike expected-loss minimization, CVaR explicitly emphasizes scenarios whose losses exceed a common risk threshold. Consequently, inaccurate recourse approximations may underestimate both the losses in these scenarios and their contribution to the tail-risk objective. Strengthening the scenario-level lower bounds may therefore be especially valuable for the master problem. This provides a possible explanation for the improved relative performance of B\&B-III compared with CB\&B as risk aversion increases.
 
-The advantage of the strengthened decomposition is especially
-apparent at higher firebreak intensities. At $\alpha=0.03$,
-neither B\&B nor B\&B-I certifies any instance across the
-three risk settings, whereas B\&B-III certifies 90 expected-loss,
-58 mean--CVaR, and 23 CVaR instances, out of 90 per objective.
-Larger budgets permit more interacting firebreak placements,
-making weak recourse bounds less effective at guiding the search.
-The improved performance of B\&B-III indicates that explicit
-path information is particularly valuable as placement
-decisions become more complex.
+The performance profiles provide further evidence of this advantage. As shown in Figure~\ref{fig:alg-cvar}, B\&B-II initially solves a larger proportion of CVaR instances than B\&B-III, but the latter overtakes it as computational time increases. This behavior suggests that the additional separation effort of B\&B-III is compensated by its ability to solve more difficult instances. Furthermore, approximately 88\% of instances solved by B\&B-III finish with an optimality gap below 5\%, compared with 69\% for CB\&B. Thus, its advantage extends beyond the proportion of optimal solutions to the quality of the final optimality bounds.
 
-Increasing the number of scenarios is particularly challenging
-under risk-sensitive objectives. For B\&B-III, the number
-of certified CVaR instances falls from 76 to 65 and 40 out of
-90 as $n$ increases from 100 to 200 and 400, respectively.
-Under mean--CVaR, the corresponding counts are 89, 85, and 63.
-In contrast, B\&B-III and CB\&B certify every expected-loss
-instance at all three sample sizes. The results highlight
-the additional computational burden of handling more
-scenario losses within a tail-risk objective.
+A similar pattern emerges for the mean--CVaR setting
+($\lambda=0.5$). B\&B-III solves 87.8\% of instances to optimality, compared with 78.5\% for CB\&B and 65.2\% for B\&B-II. It also reduces the mean computational time from 697.8\,s for CB\&B to 461.1\,s, while achieving a smaller mean final optimality gap (0.39\% versus 0.89\%). The corresponding distributions in Figure~\ref{fig:alg-mean-cvar} show that all B\&B-III instances finish with a gap below 5\%, including those not solved to optimality. These findings indicate that the benefits of the path-based inequalities persist when expected loss and tail risk are considered simultaneously.
 
-Overall, B\&B-III achieves the highest certification rate across
-the 810-instance benchmark at 84.9\%, compared with 77.3\%
-for CB\&B and 63.6\% for MILP. Its mean running time is also
-the lowest at 460.9\,s, versus 594.6\,s and 901.0\,s,
-respectively. While CB\&B retains a clear speed advantage
-under expected-loss minimization, B\&B-III leads under
-both risk-sensitive objectives. We therefore use B\&B-III
-to evaluate firebreak placements in the out-of-sample
-analysis of Section~\ref{sec:oos-stability}.
+% Overall, B\&B-III achieves the strongest computational
+% performance across the complete benchmark, certifying
+% 84.9\% of instances to optimality, compared with
+% 77.3\% for CB\&B and 63.6\% for MILP. It also
+% achieves the lowest mean computational time (460.9\,s),
+% compared with 594.6\,s and 901.0\,s, respectively.
 
-\FloatBarrier
+The differences between methods become more pronounced as the firebreak budget increases. At $\alpha=0.03$, neither B\&B nor B\&B-I solves any of the 90 instances to optimality under any risk setting. In contrast, B\&B-III solves 90, 23, and 58 instances under expected loss, CVaR, and mean--CVaR, respectively. Larger budgets expand the set of feasible firebreak placements
+and increase the interactions among potential protection decisions. Consequently, weak recourse approximations may leave a large number of promising but overly optimistic solutions in the master relaxation. The dynamically separated inequalities help reduce
+this effect by exploiting the structure of wildfire propagation. The superior performance of B\&B-III at larger budgets suggests that explicit path information becomes particularly valuable as the placement decisions become more complex.
+
+% Increasing the number of scenarios also increases computational difficulty, particularly for risk-sensitive objectives. For B\&B-III, the number of optimal CVaR solutions decreases from 76 to 65 and 40 out of 90 as $n$ increases from 100 to 200 and 400, respectively. Under mean--CVaR, the corresponding counts are 89, 85, and 63. Larger scenario samples require additional recourse approximations and introduce more constraints linking scenario losses to the risk measure, increasing the computational burden of the master problem. In contrast, both B\&B-III and CB\&B solve every expected-loss instance to optimality at all three sample sizes, although their computational times increase with $n$.
+
+These results establish B\&B-III as the most effective variant of the proposed Branch-and-Benders framework. Its ability to exploit propagation-path information yields substantial improvements over the standard decomposition, particularly for larger firebreak budgets and risk-sensitive objectives. Although CB\&B remains the fastest method under expected-loss minimization, B\&B-III provides the strongest overall performance
+when tail risk is considered. Accordingly, the subsequent
+out-of-sample analysis uses B\&B-III to evaluate firebreak placements obtained through a common optimization procedure.
 
 \subsection{Out-of-sample performance and solution stability}\label{sec:oos-stability}
 
@@ -1632,19 +1607,18 @@ samples for each $(n,\alpha,\lambda)$ configuration on a common set of
 $\widehat\mu(Y)$, CVaR $\widehat C_{0.9}(Y)$, and risk-weighted objective
 $\widehat F_\lambda(Y)=\lambda\widehat\mu(Y)
 +(1-\lambda)\widehat C_{0.9}(Y)$ are computed using the definitions
-in Section~\ref{sec2}. To assess spatial stability, we use the Jaccard
-index $J(Y_a,Y_b)=|Y_a\cap Y_b|/|Y_a\cup Y_b|$ and the optimal
-matching distance
-\[
-D(Y_a,Y_b)=\frac{1}{k}\min_{\pi\in S_k}
-\sum_{i=1}^{k}\|x_{u_i}-x_{v_{\pi(i)}}\|_2,
-\]
-where $Y_a=\{u_1,\ldots,u_k\}$ and $Y_b=\{v_1,\ldots,v_k\}$
-are placements of $k$ firebreak cells, $x_v$ denotes the
-grid coordinates of cell $v$, and $S_k$ denotes all permutations
+in Section~\ref{sec2}. 
+
+To assess spatial stability, we use the Jaccard index
+$J(Y_a,Y_b)=|Y_a\cap Y_b|/|Y_a\cup Y_b|$ and the optimal
+matching distance $D(Y_a,Y_b)=\frac{1}{k}\min_{\pi\in S_k}
+\sum_{i=1}^{k} \left\|\mathbf{p}_{u_i}-\mathbf{p}_{v_{\pi(i)}}\right\|_2,$ where $Y_a=\{u_1,\ldots,u_k\}$ and $Y_b=\{v_1,\ldots,v_k\}$
+are placements of $k$ firebreak cells,
+$\mathbf{p}_v=(r_v,c_v)$ denotes the row and column coordinates
+of cell $v$, and $S_k$ denotes the set of all permutations
 of $\{1,\ldots,k\}$. The distance measures the minimum
-average separation between matched firebreak locations, expressed
-in grid-cell widths. Both metrics are averaged over the
+average separation between matched firebreak locations,
+expressed in grid-cell widths. Both metrics are averaged over the
 $\binom{30}{2}=435$ placement pairs within each configuration.
 Table~\ref{tab:new20-oos-stability} reports held-out performance
 and placement stability. All feasible placements are included,
@@ -1723,7 +1697,7 @@ mean Jaccard similarity increases and mean optimal matching
 distance decreases between $n=100$ and $n=400$. At $\alpha=0.02$,
 expected-loss placements exhibit an increase in Jaccard similarity
 from 0.42 to 0.60 and a decrease in matching distance from
-1.31 to 0.59 grid-cell widths. Thus, placements that differ in
+1.31 to 0.59 grid-cell widths. The latter indicates that, after optimally matching the selected firebreak locations across independent solutions, their average geographical separation is less than one grid-cell width. Thus, placements that differ in
 their exact selected cells can remain geographically close.
 Risk-sensitive solutions exhibit greater spatial variability.
 At $(n,\alpha)=(400,0.02)$, the mean matching distance is 1.16
@@ -1746,6 +1720,7 @@ have a mean Jaccard similarity of 0.60 and matching distance of
 expected-loss and CVaR placements. The balanced objective thus
 produces firebreak locations geographically closer to those
 favored by CVaR minimization.
+
 
 % \subsection{Out-of-sample stability of SAA solutions}\label{sec:oos-stability}
 
@@ -1875,7 +1850,7 @@ to optimizing firebreak placement under uncertainty and risk aversion.
 
 
 \section*{Acknowledgments}
-This project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101037419 (\href{https://fire-res.eu}{FIRE-RES}) and the Complex Engineering Systems Institute (CONICYT-PIA-FB0816). \textbf{JC} acknowledges the support of the ANID through funding Postdoctoral Fondecyt project No 3210311. Also, the authors gratefully acknowledge the research support provided by Dicyt project 062217DG, Vicerrector\'ia de Investigaci\'on, Desarrollo e Innovaci\'on, Universidad de Santiago de Chile.
+This project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101037419 (\href{https://fire-res.eu}{FIRE-RES}) and the Complex Engineering Systems Institute (CONICYT-PIA-FB0816). Jaime Carrasco acknowledges the support of the ANID through funding Postdoctoral Fondecyt project No 3210311. Franco Quezada and Sebastián Dávila-Gálvez are grateful for the support of the National Agency for Research and Development (ANID) Chile through grant FONDECYT 11261130 and FONDECYT 11251766, respectively. Also, the authors gratefully acknowledge the research support provided by Dicyt project 062217DG, Vicerrector\'ia de Investigaci\'on, Desarrollo e Innovaci\'on, Universidad de Santiago de Chile. The authors gratefully acknowledge the contributions of David Palacios and Andr\'es Weintraub to earlier versions of this manuscript.
 
 \bibliographystyle{itor}
 
