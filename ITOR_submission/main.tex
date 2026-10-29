@@ -1,5 +1,4 @@
 \documentclass{itor}
-% ITOR submission format. The supplied itor.cls and itor.bst are unmodified.
 \usepackage[authoryear]{natbib}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -17,7 +16,6 @@
 \usepackage{cleveref}
 \newtheorem{proposition}{Proposition}
 
-% Publication metadata is supplied by ITOR.
 \jvol{}
 \jyear{}
 \doi{}
@@ -38,7 +36,7 @@ Graph-based valid inequalities and exact decomposition}
 \begin{abstract}
 Firebreak placement must account for uncertainty in wildfire ignition and propagation and the consequences of extreme events. We formulate the Firebreak Placement Problem as a risk-averse two-stage stochastic program minimizing a weighted combination of expected loss and Conditional Value-at-Risk (CVaR). Wildfire scenarios from Cell2Fire are represented by directed propagation graphs. We develop an exact Branch-and-Benders decomposition framework strengthened by two families of graph-based valid inequalities exploiting downstream coverage and propagation paths. We prove their validity for general directed graphs and show that the complete path-based family characterizes the linear programming recourse function under fractional firebreak decisions. Experiments on 810 instances show that the path-strengthened algorithm achieves an optimality certification rate of 84.9\%, compared with 77.3\% for a combinatorial Branch-and-Benders benchmark and 63.6\% for the extensive mixed-integer formulation. Its advantages are strongest under risk-sensitive objectives, while the combinatorial benchmark is faster for expected-loss minimization. 
 \end{abstract}
-\keywords{Firebreak placement; Two-stage stochastic programming; Conditional Value-at-Risk; Branch-and-Benders decomposition; Graph-based valid inequalities; }
+\keywords{Firebreak placement; Two-stage stochastic programming; Conditional Value-at-Risk; Branch-and-Benders decomposition; Graph-based valid inequalities}
 \maketitle
 
 \section{Introduction}
@@ -334,7 +332,6 @@ generally be treated
 We impose a cardinality constraint on the number
 of selected cells and define the set of feasible
 firebreak placements as
-%
 \begin{equation}
 \label{Eq:Constraint}
 \mathbb{Y}
@@ -345,7 +342,6 @@ firebreak placements as
 \leq \alpha|\mathcal{V}|
 \right\},
 \end{equation}
-%
 where $\alpha\in[0,1]$ denotes the maximum
 proportion of landscape cells that can be
 allocated to firebreaks, referred to as the
@@ -360,14 +356,11 @@ nonnegative weight vector $\vb{w}$, let
 $L(\vb{y},\vb{w},\tau)$ denote the total weighted
 loss caused by the corresponding wildfire.
 The expected wildfire loss is defined as
-%
 $\Phi(\vb{y},\vb{w})
 =\mathbb{E}_{\tau}
 [L(\vb{y},\vb{w},\tau)]$.
-%
 The expected-loss firebreak placement problem is
 therefore formulated as
-%
 \begin{equation}
 \label{Eq:FMP}
 \min_{\vb{y}\in\mathbb{Y}}
@@ -385,7 +378,6 @@ $\Omega=\{1,\ldots,n\}$ of $n$ independent and
 identically distributed wildfire realizations
 $\tau_\omega$. The expected loss can be
 approximated by the sample-average estimator
-%
 \begin{equation}
 \label{Eq:EVAL}
 \bar{\Phi}(\vb{y},\vb{w})
@@ -394,7 +386,6 @@ approximated by the sample-average estimator
 \sum_{\omega\in\Omega}
 L(\vb{y},\vb{w},\tau_\omega).
 \end{equation}
-%
 This sample-average approximation motivates the
 scenario-based stochastic programming formulation
 introduced in Section~\ref{s:general-model}.
@@ -419,7 +410,7 @@ than $\vb{y}^1$ for the illustrated scenario.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[scale=.5]{figs/example1_sub20_and_weather.pdf}
+\includegraphics[scale=.5]{fig/landscape.pdf}
 \vspace{1ex}
 \caption{\textbf{A}: Graph representation of the
 landscape and an example wildfire;
@@ -429,7 +420,7 @@ landscape and an example wildfire;
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[scale=.5]{figs/example2_efficients_firebreaks.pdf}
+\includegraphics[scale=.5]{fig/firebreaks.pdf}
 \vspace{1ex}
 \caption{Comparison of two firebreak configurations
 under the same wildfire scenario.
@@ -452,7 +443,6 @@ For a fixed firebreak configuration $\vb{y}$,
 let $L_{\vb{y}}=L(\vb{y},\vb{w},\tau)$ denote
 the corresponding random wildfire loss.
 Its cumulative distribution function is
-%
 \begin{align}
 F_{\vb{y}}(z)
 =
@@ -461,10 +451,8 @@ F_{\vb{y}}(z)
 L_{\vb{y}}\leq z
 \right).
 \end{align}
-%
 For a confidence level $\beta\in(0,1)$,
 Value-at-Risk is defined as
-%
 \begin{align}
 \operatorname{VaR}_{\beta}(L_{\vb{y}})
 =
@@ -473,9 +461,7 @@ z\in\mathbb{R}:
 F_{\vb{y}}(z)\geq\beta
 \right\}.
 \end{align}
-%
 The corresponding CVaR is given by
-%
 \begin{align}
 \operatorname{CVaR}_{\beta}(L_{\vb{y}})
 =
@@ -484,14 +470,12 @@ The corresponding CVaR is given by
 \operatorname{VaR}_{\gamma}(L_{\vb{y}})
 \,d\gamma.
 \end{align}
-%
 CVaR can therefore be interpreted as the average
 loss in the worst $(1-\beta)$ proportion of
 wildfire outcomes.
 
 Following \citet{rockafellar2000optimization},
 CVaR admits the equivalent representation
-%
 \begin{equation}
 \label{CVaR_Formula}
 \operatorname{CVaR}_{\beta}(L_{\vb{y}})
@@ -508,7 +492,6 @@ L(\vb{y},\vb{w},\tau)-\varphi
 \right]
 \right\},
 \end{equation}
-%
 where $(a)^+=\max\{a,0\}$ and $\varphi$
 represents a loss threshold. This representation
 allows CVaR to be incorporated into a stochastic
@@ -527,94 +510,7 @@ $\rho^\omega=1/n$ for every
 $\omega\in\Omega$.
 
 
-% \section{Theoretical Framework to FPP under Uncertainty}\label{sec2}
-
-% In this section, we introduce the basic notations, assumptions, and wildfire concepts to formulate the \textit{firebreak placement problem} (FPP) as a stochastic optimization model.
-
-% \subsection{Theoretical Background}
-% The landscape is represented as a collection of cells denoted by $\mathcal{V}$, automatically determined by the resolution of the data layers (georeferenced ASCII files to include landscape information such as forest fuels, elevation, slope, and aspect). These cells form the nodes of $c$, the graph depiction of the landscape (see Fig.\:\ref{fig:graphs_landscape}-\textbf{A}). In this context, $\mathcal{E}$ represents the set of edges, with each cell having eight neighbors. To allow decision-makers to prioritize protection for specific areas with high priority or value-to-protect (e.g., a biodiversity index), we introduce a parameter $w_v$ for each $v \in \mathcal{V}$, which represents the relevance of each cell $v \in \mathcal{V}$ in the landscape. Similarly, the edges in the graph can represent both the underlying connectivity or other factors, such as distances between cell centers and transportation costs, among other possibilities \citep{carrasco2023firebreak}.
-
-% As mentioned in our Introduction, uncertainty arises from the occurrence of fires in the landscape, primarily divided into two coupled processes: ignition and fire spread. The first process involves randomly selecting a cell where the fire starts, which, depending on the origin of the ignition, natural or human-caused, may consider a uniform spatial probability distribution or a probability model trained using historical ignitions, respectively \citep{carrasco2021exploring}. The second process entails the spatial propagation of the fire, which depends on the heterogeneously distributed vegetation in the landscape, topography, and meteorological conditions. In our study, we will assume that fire ignitions are uniformly distributed across the landscape due to their non-anthropic nature, mainly generated by lightning. Furthermore, the fire spread will be simulated using the Cell2Fire simulator \citep{pais2021cell2fire}. When a fire occurs during a simulation $s \in \mathcal{S}$ -- with $\mathcal{S}$ being the set of simulations -- a messaging process is triggered between the nodes of $\mathcal{F}$ that generates a directed graph $\mathcal{T}^s = (\mathcal{V}^s, \mathcal{E}^s)$, where $\mathcal{V}^s \subseteq \mathcal{V}$ is the set containing all the cells burned during the simulation $s$. The set of edges $\mathcal{E}^s$ is constructed from these signals to represent fire propagation between adjacent cells (see more details in \cite{pais2021downstream}).
-
-
-% \subsection{Feasible solutions}
-% There is evidence that fire patterns can be influenced by land cover arrangement and appropriate forest and vegetation management practices \citep{amiro2001fire,cheney1993influence}. These activities, referred to as fuel treatment, may involve firebreak creation, prescribed burns, clear-cutting, thinning, or a combination of these methods \citep{North2015ReformFF}. As mentioned above, our study focuses on the problem of firebreak placement, which consists of replacing a number of cells that have forest fuel with a non-flammable one, i.e., it is assumed here that the application of a firebreak to a landscape cell involves the complete removal of vegetation fuel at that location, rendering the firebreaks non-flammable. So, we introduce binary decision variables represented by a vector $ \vb{y} \in \{0,1\}^{\vert\mathcal{V}\vert} $, where $y_v$ equals one if cell $v$ is chosen for constructing a firebreak and zero otherwise. Due to the high costs involved in constructing firebreaks and, broadly, fuel treatments, in practice, only a small percentage of the forest is managed \citep{oliveira2016assessing,jingan2005land}, and that imposes a constraint on the decision variables. Other constraints could be considered, such as environmental restrictions, regulations, access feasibility, and costs, among others. In this first study, the set of feasible solutions is defined  as follows:
-% \begin{equation} 
-%     \mathbb{Y} := \{ \vb{y} \in \{0,1\}^{\lvert \mathcal{V}\vert}: \sum_{v\in\mathcal{V}}y_{v}\leq\alpha\lvert \mathcal{V}\vert  \}
-%     \label{Eq:Constraint}
-% \end{equation}
-% where the parameter $\alpha \in [0, 1]$, represents the percentage of the landscape to be treated or \textit{firebreak intensity}.
-
-% \subsection{Expected value}
-% When a fire $\tau$ occurs on the landscape, it affects a number of cells, say $\mathcal{V}^\tau$, and there is a probability that its spread will be blocked by the presence of firebreaks. From this fact, the decision $\vb{y}$ will be as efficient as its ability to intersect the fire $\tau$. Let $ L\left(\vb{y}; \vb{w}, \tau \right) $ be the random variable that represents the burned cells due to a random fire $\tau$ on the landscape $\mathcal{F}$, given the decision variables $\vb{y}$ and the weighted vector $\vb{w}$, from this, we can define the function $\Phi(\vb{y},\vb{w})=\mathbb{E}_\mathcal{\tau} \left[ L \left(\vb{y}, \vb{w}, \tau \right) \right]$ as the expected value (EV) of a random variable $ L\left(\vb{y}, \vb{w}, \tau \right) $ where $\tau$  represents the randomness in our study. Thus, the \textit{firebreak placement problem} (FPP) is formulated as follows:   
-% \begin{equation} \label{Eq:FMP}
-%     \min_{\vb{y} \in \mathbb{Y}} \Phi(\vb{y(\vb{w})}):=\mathbb{E}_\mathcal{\tau} \left[ L \left(\vb{y}, \vb{w}, \tau \right) \right]
-% \end{equation}
-% The optimization model of Eq.\:(\ref{Eq:FMP}) aims to find an \textit{optimal firebreak plan} $\vb{
-% y}$ (or simply as an \textit{optimal plan}).
-
-
-% The distribution of $ L\left(\vb{y}, \vb{w},\tau \right) $ is an unknown function of the vector of decision variables $\vb{y}$ and weighted vector $\vb{w}$, but realizations of $ L\left(\vb{y}, \vb{w}, \tau \right) $ can be observed through simulation experiments with Cell2Fire \citep{pais2021cell2fire}. With this software, we can simulate a set $T := \{\tau_1, \dots, \tau_{\lvert \mathcal{S}\vert}\}$  of independent and identically distributed (i.i.d.) simulations, which generate $L(\vb{y}, \vb{w}, \tau_1),L(\vb{y}, \vb{w}, \tau_2),...,L(\vb{y}, \vb{w}, \tau_{\lvert \mathcal{S}\vert})$ values at any $\vb{y}$ and $\vb{w}$. With them, we can approximate the function $\Phi(\vb{y}, \vb{w})$ by:
-% \begin{equation} \label{Eq:EVAL}
-%     \Bar{\Phi}(\vb{y}, \vb{w}) = \dfrac{1}{\lvert \mathcal{S}\vert} \sum_{s=1}^{\lvert \mathcal{S}\vert}L(\vb{y}, \vb{w},\tau_s)
-% \end{equation}
-% where the sampling errors can be controlled by increasing the number of i.i.d. simulations $\lvert \mathcal{S}\vert$.
-
-
-% We conclude this section with three important points:
-% \begin{itemize}
-%     \item[i)]  $\Phi(\vb{y} = 0,\vb{w})$ represents the expected loss if no fuel treatment action is taken on the landscape and can be approximated by Eq.\:(\ref{Eq:EVAL}). Figure \ref{fig:graphs_landscape}-\textbf{A} illustrates this situation.
     
-%     \item[ii)] Figure \ref{fig:graphs} illustrates two solutions, denoted as $\vb{y}^1$ (chart \textbf{A}) and $\vb{y}^2$ (chart \textbf{B}). Solution $\vb{y}^2$ proves to be more effective than $\vb{y}^1$ for the wildfire depicted in both tiles, as it prevents the burning of 9 cells in contrast to $\vb{y}^1$ (assuming $\vb{w = 1}$), which prevents three cells. In both cases, firebreaks are first placed in the landscape, followed by a simulation of the fire's progress from the same ignition point and under equivalent weather conditions.
-
-%     \item[iii)]  In terms of the function $\Bar{\Phi}$, $\Bar{\Phi}(\vb{y}^1, \vb{w = 1}) = 79 > \Bar{\Phi}(\vb{y}^2, \vb{w = 1}) = 73$. However, for this example, we set $\lvert \mathcal{S}\vert = 1$. In this example, $\vb{y}^2$ is better than $\vb{y}^1$, since it results in a smaller number of burned cells. 
-% \end{itemize}
-
-% \begin{figure}[h]
-% \centering
-% \includegraphics[scale=.5]{figs/example1_sub20_and_weather.pdf}
-% \vspace{1ex}
-% \caption{\textbf{A}: Graph representation of the landscape, and a wildfire; \textbf{B}: Example of a fire-weather scenario.}
-% \label{fig:graphs_landscape}
-% \end{figure}
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[scale=.5]{figs/example2_efficients_firebreaks.pdf}
-% \vspace{1ex}
-%   \caption{The chart \textbf{A} shows a less efficient firebreak placement compared to that depicted in chart \textbf{B}.}
-%   \label{fig:graphs}
-% \end{figure}
-% \FloatBarrier
-
-
-% \subsection{Conditional Value-at-Risk}
-
-% Conditional Value-at-Risk (CVaR) is a risk measure that is alternatively known as mean excess loss, mean shortfall, or tail Value-at-Risk (VaR) and is typically used in portfolio theory. Thus, in the FPP context, it can intuitively be seen as the expected value of burned cells in the $( 1 - \beta) \times 100\% $ worst cases, where $\beta \in ]0,1[$. Formally, we follow the paper of \cite{rockafellar2000optimization} to define the CVaR in the context of FPP.
-
-% Let $F_L$ be the cumulative probability distribution of our random variable $L := L(\vb{y}, \vb{w}, \tau)$:
-% \begin{align}
-%     F_L(\vb{y}, \vb{w}, \varphi) = \mathbb{P}( \{ \tau \in \Gamma : L(\vb{y}, \vb{w}, \tau) \leq \varphi \}).
-% \end{align}
-% The Value-at-Risk at level $\beta$, or VaR$_{\beta}$, of  $L$ is defined by:
-% \begin{align}
-%     \text{VaR}_{\beta}(L)= \min \{\varphi \in \mathbb{R} : F_L(\vb{y}, \vb{w},\varphi) \geq \beta\}, 
-% \end{align}
-% $\text{VaR}_\beta(L)$ thus corresponds to the  $\beta$-percentile of the probability distribution of $L$. In the case where $L(\vb{y}, \vb{w}, \tau)$ represents quantities of burned cells weighted, VaR$_\beta(L)$ can be interpreted as the largest possible burned cells that may be observed once the $(1-\beta)\times 100 $\% worst potential outcomes have been excluded.  
-
-% \noindent The  Conditional-Value-at-Risk at level $\beta$ or CVaR$_{\beta}$ is defined  by:
-% \begin{align}
-% \text{CVaR}_\beta(L)= \frac{1}{1-\beta} \int_{\beta}^{1} \text{VaR}_{\gamma}(L) d\gamma
-% \end{align}
-
-% Following the result presented in~\cite{rockafellar2000optimization}, $\text{CVaR}_\beta(L)$ for the FPP can be expressed as the optimal value of the following optimization problem:
-% \begin{align}
-% \text{CVaR}_\beta(L) = \min \limits_{\varphi, \vb{y} \in \mathbb{Y}  } \Big \{ \varphi + \frac{1}{1- \beta} \mathbb{E}_\tau[(L(\vb{y}, \vb{w}, \tau) - \varphi)^+] \Big \},
-% \label{CVaR_Formula}
-% \end{align}
-% where $( \bullet )^+ = \max(\bullet, 0)$. This reformulation is widely used to reformulate scenario-based stochastic integer programs involving a CVaR risk measure as mixed-integer linear programs. Likewise, in the expected value, we assume that the random variable $L(\vb{y}, \vb{w},\tau)$ has a finite and discrete set of $S$ possible realizations generated by Cell2fire simulator, each one corresponding to a scenario equally probable $L^s:=L(\vb{y}, \vb{w}, \tau_s)$, the term $\mathbb{E}[(L - \varphi)^+]$ in the CVaR of Eq.~\eqref{CVaR_Formula}, can be replaced by the weighted sum of possible outcomes exceeding the risk level $\varphi$, i.e., $\frac{1}{\lvert \mathcal{S}\vert}\sum_{s=1}^{\lvert \mathcal{S}\vert} (L^s - \varphi)^+$, which can easily be handled by adding a set of linear inequalities in the problem formulation. 
-
-% \textcolor{red}{Add more references involving CVaR in Wildfires and also in general context of stochastic programming.}
 
 
 \section{Two-stage stochastic programming formulation}
@@ -651,7 +547,6 @@ threshold $\varphi$ and nonnegative auxiliary variables
 $\eta^\omega$ to linearize the CVaR term.
 
 The resulting formulation is given by
-%
 \allowdisplaybreaks{
 \begin{subequations}
 \label{m:fpp}
@@ -812,83 +707,6 @@ variables admits a binary counterpart
 with the same optimal objective value.
 \end{proof}
 
-% \section{FPP as a two-stage stochastic programming model}\label{s:general-model}
-
-% In this study, we present a novel approach to address the FPP. Our proposed methodology involves a two-stage stochastic mixed-integer linear programming mathematical formulation.  We assume that the underlying stochastic input process has a finite probability space so that the information on the evolution of the uncertain parameters can be represented by a discrete set of scenarios $\Omega = \{ 1,\dots, |\Omega|\}$. The probability for scenario $\omega$ is given by $\rho^\omega$, with a total probability of 1 over all the scenarios, i.e., $\sum_{\omega \in \Omega} \rho^\omega = 1$.
-
-% Following the notation introduced in Section \ref{sec2}, $\tau_s$ is the wildfire scar resulting from a simulation $s$ of the Cell2Fire. It is characterized by a directed acyclic graph $\mathcal{T}^s=(\mathcal{V}^s,\mathcal{E}^s)$, which represents a possible scenario in the two-stage stochastic program. Let $v(\omega)$ be the node that denotes the ignition point of scenario $\omega$, i.e., the node that begins to spread the wildfire. Thus, we can define the  stochastic problem scenario $\omega$ as a set of nodes $V^\omega$, an ignition point $v(\omega)$ and  the wildfire spread $\delta^\omega_+(v)$ from one node to another, where $\delta^{\omega}_{+}(v)$ denote the set of nodes that are incident from node $v \in \mathcal{V}^\omega$,  following the simulation of the Cell2Fire.
-
-% In this approach, the first stage is to decide the firebreak placement, i.e., determining which set of cells will be treated, subject to $\alpha$, which represents the percentage of land to be used as firebreak selected by the decision-maker. Thus, we introduce a binary variable $y_v$ that takes the value 1 if the node $v \in \mathcal{V}$ is placed a firebreak and 0 otherwise. Meanwhile, in the second stage, the performance of these firebreak placements is evaluated in each scenario. Specifically, given the location of the firebreak determined in the first stage, the second stage calculates the number of burned cells in each scenario, taking into account the spread of wildfire simulated. Thus, let $x^\omega_v$ be a binary variable that takes value 1 if node $v \in \mathcal{V}^\omega$ is burned in the scenario $\omega$ after the firebreak placement and 0 otherwise. So the value of $L^\omega(\vb{y},\vb{w},\tau_s)$ can be calculated as $\sum_{v \in \mathcal{V}} w_{v} x_v^{\omega} $. The objective is to balance the optimization of the expected value (EV) and the conditional value at risk (CVaR) of the burned cell. Thus, we introduce the parameter $\lambda \in [0,1]$ to balance the trade-off between both objectives. By incorporating EV and CVaR into the optimization process, we aim to enhance the effectiveness and efficiency of firebreak placement strategies. This approach allows decision-makers to study different balances between these two objectives.  \\
-
-% Thus, it follows that the mathematical model can be expressed in the following manner:
-% \begin{subequations} \label{m:fpp}
-% \begin{align}
-% \underset{\vb{x},\vb{y},\varphi, \vb{\eta}}{\text{minimize}} \quad &  \lambda \sum_{\omega \in \Omega} \rho^\omega \sum_{v \in \mathcal{V}}w_v x_{v}^{\omega}  + (1-\lambda) \left (\varphi + \frac{1}{(1-\beta)} \sum_{\omega \in \Omega} \rho^\omega\eta^\omega \right)& \label{fo:min_expected4}
-% \end{align}
-% \begin{align}
-%     \text{subject to: } 
-%     & \sum_{v \in \mathcal{V}} y_{v} \leq \alpha \lvert \mathcal{V} \vert,& \label{c:capacity}\\
-%     & x_{v(\omega)}^{\omega} = 1 & \forall \omega \in \Omega, \label{c:ignition} \\
-%     & x_{v}^{\omega} \leq x_{u}^{\omega} + y_{u} & \forall v \in \mathcal{V},  \; u \in \delta^{\omega}_+(v) \; \omega \in \Omega, \label{c:spread}\\
-%     %& x_{u}^{s} \leq 1 - y_{u} & u \in V\setminus \{ v(s)\} , \; s \in \mathcal{S}, \label{c:spread_2}\\
-%     & \sum_{v \in \mathcal{V}^{\omega} }w_v x_v^\omega - \varphi \leq \eta^\omega & \forall \omega \in \Omega, \label{c:cvar_linearization} \\ 
-%     & \eta^\omega \geq 0 &\forall \omega \in \Omega,  \label{c:eta} \\
-%     &\varphi \geq 0, & \\    
-%     & \bf{x}, \bf{y} \in \{0,1\}. \label{c:variables} 
-% \end{align}
-% \end{subequations}
-
-% Equation\:\eqref{fo:min_expected4} minimizes the linear combination of the expected value of weighted burned nodes and the conditional value at risk. The first term corresponds to the sum of all burned cells \textit{v} weighted by parameter $w_v$ over all scenarios with a certain probability of occurrence $\rho$. Meanwhile, the second term seeks to minimize worst-case scenarios represented by the weighted sum of burned cells over the Value-at-Risk $\varphi$. We introduce the variable $\eta_\omega$ that allows linearization of the formulate \eqref{CVaR_Formula}. In particular, the constraint \eqref{c:cvar_linearization} force $\eta_{\omega}$ take the value  $L(\vb{y}, \vb{w}, \tau_\omega) - \varphi$, while the constraint\eqref{c:eta} force to take only nonnegative values. Note that The parameter $\lambda\in[0,1]$ controls the relative importance
-% of expected wildfire loss and CVaR in the objective function.
-% When $\lambda=1$, the model minimizes expected loss, corresponding
-% to a risk-neutral decision-maker, whereas $\lambda=0$ yields
-% CVaR minimization. Decreasing $\lambda$ therefore places greater
-% emphasis on losses associated with adverse wildfire scenarios. Constraints \eqref{c:capacity} define the limit of cells used as a firebreak based on the value of $\alpha$. Constraints \eqref{c:ignition} establish the origin of the wildfire, and Constraints \eqref{c:spread} define the propagation of fire in each scenario. This is as follows: given a scenario $\omega$ if the node (or cell) $v$ is burned, an incident node $u$ from node $v$ must also be burned unless a firebreak is allocated. Thus, given a starting ignition node, $v(\omega)$ in each scenario, the firebreaks limit the wildfire spread, and a decision has to be made in every node in which a firebreak can be assigned to stop the fire such that minimizes the objective function. Finally, the constraint \eqref{c:variables} defines the binary variables $\bf{x}$ and $\bf{y}$ declaring that not half harvest can be done at each node. Note that if the firebreak intensity is equal to zero (i.e., $\alpha=0$), the constraints \eqref{c:spread} recover the fire scar of each scenario.
-
-% An important property of the proposed formulation concerns the
-% integrality of the second-stage burn variables. As established in
-% the following proposition, their integrality constraints can be
-% relaxed without changing the optimal value of the problem.
-
-% \begin{proposition}
-% \label{prop:integrality_recourse}
-% For any feasible first-stage decision $\vb{y}\in\mathbb{Y}$,
-% the second-stage problem admits an optimal solution with
-% binary burn variables. Consequently, relaxing
-% $x_v^\omega\in\{0,1\}$ to $0\leq x_v^\omega\leq 1$
-% for all $v\in\mathcal{V}^\omega$ and $\omega\in\Omega$
-% does not change the optimal value of the proposed formulation.
-% \end{proposition}
-
-% \begin{proof}
-% Consider any feasible binary firebreak configuration $\vb{y}$.
-% For each scenario $\omega\in\Omega$, define
-% $\hat{x}_v^\omega=1$ if node $v$ is reachable from
-% the ignition node $v(\omega)$ through a directed path
-% containing no selected non-ignition firebreak, and
-% $\hat{x}_v^\omega=0$ otherwise. By construction, $\hat{x}_{v(\omega)}^\omega=1$.
-% Moreover, for any propagation arc $(i,j)\in\mathcal{E}^\omega$,
-% if $\hat{x}_i^\omega=1$ and $y_j=0$, then
-% $\hat{x}_j^\omega=1$.
-% Hence, $\hat{\vb{x}}^\omega$ satisfies all
-% propagation constraints.
-
-% Now consider any feasible fractional solution $\vb{x}^\omega\in[0,1]^{|\mathcal{V}^\omega|}$. Since $x_{v(\omega)}^\omega=1$, the propagation
-% constraints imply that $x_v^\omega=1$ for every node reachable from the ignition through a path containing no selected non-ignition firebreak.
-% Therefore, $\hat{x}_v^\omega\leq x_v^\omega,
-% \qquad \forall v\in\mathcal{V}^\omega$. Since $w_v\geq0$, it follows that  
-% $\sum_{v\in\mathcal{V}^\omega}w_v\hat{x}_v^\omega
-% \leq
-% \sum_{v\in\mathcal{V}^\omega}w_v x_v^\omega$.
-
-% Thus, replacing $\vb{x}^\omega$ by
-% $\hat{\vb{x}}^\omega$ in every scenario preserves
-% feasibility, including the CVaR linearization
-% constraints, and cannot increase the objective value
-% for any $\lambda\in[0,1]$. Consequently, every optimal solution of the formulation with relaxed burn variables admits a binary counterpart
-% with the same optimal objective value.
-% \end{proof}
-
 
 \section{Branch-and-Benders and graph-based inequalities}
 \label{sec:branch_benders}
@@ -899,7 +717,6 @@ The extensive formulation (8) introduces burn variables for every cell and wildf
 \label{subsec:exact_decomposition}
 
 The proposed decomposition separates the first-stage firebreak placement decisions from the scenario-dependent wildfire propagation decisions. For each scenario $\omega \in \Omega$, we introduce a nonnegative master variable $\theta^\omega$ representing a lower approximation of the corresponding second-stage recourse cost. The variables $\varphi$ and $\eta^\omega$ retain their definitions from formulation~\eqref{m:fpp}, representing the CVaR loss threshold and the scenario-specific excess loss, respectively. The resulting master problem is formulated as follows:
-%
 \begin{equation}
 \label{m:fpp_bd}
 \begin{aligned}
@@ -920,11 +737,9 @@ The proposed decomposition separates the first-stage firebreak placement decisio
 & \varphi \geq 0.
 \end{aligned}
 \end{equation}
-%
 The constraints $\theta^\omega \geq Q^\omega(\vb{y})$, where $Q^\omega(\vb{y})$ denotes the optimal second-stage loss under scenario $\omega$, are progressively enforced through Benders optimality cuts.
 
 For a given first-stage solution $\bar{\vb{y}} \in [0,1]^{|\mathcal{V}|}$, we formulate the scenario subproblem following the variable-copy approach of \citet{rahmaniani2020benders} as follows:
-%
 \begin{equation}
 \label{m:fpp_sp}
 \begin{aligned}
@@ -945,15 +760,10 @@ u \in \delta_+^\omega(v),\\
 && \forall v \in \mathcal{V}.
 \end{aligned}
 \end{equation}
-%
 Here, $\tilde{y}_v^\omega$ denotes a scenario-specific copy of the first-stage variable $y_v$, linked to the master solution through the fixing constraints $\tilde{y}_v^\omega=\bar{y}_v$. As established in Proposition~\ref{prop:integrality_recourse}, the linear programming subproblem \eqref{m:fpp_sp} yields the exact scenario loss for any feasible binary firebreak placement. For fractional first-stage solutions, it defines the LP recourse function used to generate Benders optimality cuts.
 
 
-
-
-
 Let $\pi_v^\omega$ denote the dual multiplier associated with the fixing constraint $\tilde{y}_v^\omega=\bar{y}_v$. By linear programming duality, the solution of the scenario subproblem yields the following Benders optimality cut:
-%
 \begin{equation}
 \label{c:benders_optimality}
 \theta^\omega \geq Q^\omega(\bar{\vb{y}})
@@ -961,7 +771,6 @@ Let $\pi_v^\omega$ denote the dual multiplier associated with the fixing constra
 \pi_v^\omega (y_v-\bar{y}_v),
 \qquad \forall \omega \in \Omega.
 \end{equation}
-%
 These cuts provide globally valid affine lower bounds on the recourse function and are tight at the evaluated solution $\bar{\vb{y}}$.
 
 One limitation of the Branch-and-Benders framework is that weak initial approximations of the scenario recourse costs may require numerous subproblem evaluations and Benders cuts, leading to slow convergence. To address this limitation, we investigate graph-based valid inequalities that exploit the structure of wildfire propagation to strengthen the master problem's recourse estimates $\theta^\omega$. 
@@ -972,7 +781,6 @@ One limitation of the Branch-and-Benders framework is that weak initial approxim
 A lower bound on the scenario recourse cost can be obtained by estimating the maximum protection that a firebreak configuration could provide. The underlying idea is to identify the cells potentially protected by each firebreak and subtract their associated values from the wildfire loss without intervention. Since this estimate may overstate the actual protection, the resulting expression provides a lower bound on the recourse cost.
 
 For each scenario $\omega \in \Omega$, let $R^\omega(\vb{y})$ denote the set of cells reachable from the ignition node $v(\omega)$ under a binary firebreak configuration $\vb{y}$. In particular, $R^\omega(\vb{0})$ represents the cells burned in the absence of firebreaks. For each $v \in R^\omega(\vb{0}) \setminus \{v(\omega)\}$, we define its downstream set as
-%
 \begin{equation}
 \label{eq:downstream_set}
 D^\omega(v) =
@@ -982,7 +790,6 @@ k \in R^\omega(\vb{0}) :
 \text{ to } k \text{ in } \mathcal{T}^\omega
 \right\},
 \end{equation}
-%
 where each such cell belongs to its own downstream set. For all other cells, we set $D^\omega(v)=\emptyset$. In particular, the ignition node is excluded because it always burns and its selection as a firebreak does not prevent further propagation.
 
 Treating a cell $v$ may prevent fire from reaching some or all of the cells in $D^\omega(v)$. However, alternative propagation paths may allow these cells to burn despite the treatment. Consequently, $\sum_{k \in D^\omega(v)} w_k$ represents an upper bound on the reduction in wildfire loss attributable to treating $v$.
@@ -990,7 +797,6 @@ Treating a cell $v$ may prevent fire from reaching some or all of the cells in $
 When several firebreaks are selected, their downstream sets may overlap, causing the potential protection of individual cells to be counted multiple times. To account for this overlap, we consider subsets of the cells reachable without intervention and construct lower bounds on their contribution to the scenario loss.
 
 For each scenario $\omega \in \Omega$, let $U \subseteq R^\omega(\vb{0})$ be any subset of these cells. By restricting the wildfire loss to $U$ and subtracting the potential protection associated with the selected firebreaks, we obtain the following family of inequalities:
-%
 \begin{equation}
 \label{eq:coverage_projected}
 \theta^\omega \geq
@@ -1004,7 +810,6 @@ For each scenario $\omega \in \Omega$, let $U \subseteq R^\omega(\vb{0})$ be any
 \forall U \subseteq R^\omega(\vb{0}),\;
 \omega \in \Omega.
 \end{equation}
-%
 These inequalities estimate the remaining wildfire loss within $U$ by subtracting an upper bound on the protection attributable to the selected firebreaks. Their validity follows from the propagation constraints.
 
 \begin{proposition}
@@ -1027,7 +832,6 @@ Summing the propagation constraints along this path yields  $x_k^\omega \geq
 1-\sum_{j=1}^{m}y_{v_j}$. Every non-ignition node $v_j$ on this path satisfies
 $k \in D^\omega(v_j)$. Since $y_v \geq 0$, we obtain $x_k^\omega \geq
 1-\sum_{\substack{v \in \mathcal{V}: k \in D^\omega(v)}}y_v$. The nonnegativity of the burn variables and cell weights implies
-%
 \begin{align*}
 Q^\omega(\vb{y})
 &\geq
@@ -1049,13 +853,11 @@ k \in D^\omega(v)}}y_v
 \sum_{k \in D^\omega(v)\cap U}w_k
 \right)y_v.
 \end{align*}
-%
 Therefore, inequalities \eqref{eq:coverage_projected}
 are valid.
 \end{proof}
 
 An important particular case is obtained by choosing $U=R^\omega(\vb{0})$ in \eqref{eq:coverage_projected}, yielding
-%
 \begin{equation}
 \label{eq:llbi}
 \theta^\omega \geq
@@ -1067,7 +869,6 @@ An important particular case is obtained by choosing $U=R^\omega(\vb{0})$ in \eq
 \right)y_v,
 \qquad \forall \omega \in \Omega.
 \end{equation}
-%
 Inequality \eqref{eq:llbi} estimates the remaining wildfire loss by subtracting the potential protection associated with each selected firebreak over the entire set of cells reachable without intervention. However, overlapping downstream sets may cause the protection value of a cell to be subtracted multiple times, weakening the resulting lower bound.
 
 The family \eqref{eq:coverage_projected} addresses this limitation by allowing cells to be excluded when their inclusion would weaken the inequality. Although this family contains exponentially many inequalities, its strongest member at a given $\bar{\vb{y}} \in [0,1]^{|\mathcal{V}|}$ can be identified directly. Indeed, each cell $k$ contributes $w_k(1- \sum_{\substack{v \in \mathcal{V}: k \in D^\omega(v)}}\bar{y}_v$ to the right-hand side of \eqref{eq:coverage_projected}. Since $w_k \geq 0$, a maximizing subset is therefore given by  $U = \{
@@ -1109,7 +910,6 @@ the burning of $k$ is bounded below by one minus the
 sum of the firebreak decisions along the selected path.
 Aggregating these bounds over $U$ yields the following
 family of inequalities:
-%
 \begin{equation}
 \label{eq:path-proj}
 \theta^\omega \geq
@@ -1124,7 +924,6 @@ family of inequalities:
 &\forall \omega \in \Omega.
 \end{aligned}
 \end{equation}
-%
 Each inequality estimates the remaining wildfire loss over
 $U$ using one propagation path per cell. Unlike
 \eqref{eq:coverage_projected}, which bounds the potential
@@ -1153,7 +952,6 @@ inequality reduces to $x_{v(\omega)}^\omega \geq 1$.
 
 Since the burn variables and cell weights are nonnegative,
 every feasible second-stage solution satisfies
-%
 \begin{align*}
 \sum_{k \in \mathcal{V}^\omega}w_k x_k^\omega
 \geq
@@ -1165,7 +963,6 @@ every feasible second-stage solution satisfies
 \sum_{k \in U}w_k
 \sum_{v \in V(p_k)\setminus\{v(\omega)\}}y_v.
 \end{align*}
-%
 Taking the minimum over feasible second-stage solutions
 establishes the validity of \eqref{eq:path-proj}.
 \end{proof}
@@ -1179,12 +976,10 @@ For a fixed $\vb{y}$, the strongest inequality in
 minimum-cost path for each cell satisfying
 $d_k^\omega(\vb{y})<1$ and omitting the remaining cells.
 Its right-hand side is
-%
 \[
 \sum_{k \in R^\omega(\vb{0})}
 w_k\max\{0,1-d_k^\omega(\vb{y})\}.
 \]
-%
 This value is attained by the scenario recourse problem.
 Indeed, setting
 $x_k^\omega=\max\{0,1-d_k^\omega(\vb{y})\}$
@@ -1539,31 +1334,26 @@ solutions increases from 65.2\% with B\&B to 95.6\% with B\&B-II.
 
 \begin{figure}[htbp]
 \centering
-% (a) Expected loss
 \begin{subfigure}{0.7\linewidth}
     \centering
     \includegraphics[width=\linewidth]
-    {figs/profile_20x20_Expected_N100_200_400_all_alpha_no_poly_balanced_fonts.png}
+    {fig/performance_expected.png}
     \caption{Expected loss ($\lambda=1.0$).}
     \label{fig:alg-expected}
 \end{subfigure}
-% \vspace{0.15cm}
-% (c) Mean-CVaR
 \begin{subfigure}{0.7\linewidth}
     \centering
     \includegraphics[width=\linewidth]
-    {figs/profile_20x20_MeanCVaR_N100_200_400_all_alpha_no_poly_balanced_fonts.png}
+    {fig/performance_mean_cvar.png}
     \caption{Mean--CVaR ($\lambda=0.5$).}
     \label{fig:alg-mean-cvar}
 \end{subfigure}
-% (b) CVaR
 \begin{subfigure}{0.7\linewidth}
     \centering
-    \includegraphics[width=\linewidth]    {figs/profile_20x20_CVaR_N100_200_400_all_alpha_no_poly_balanced_fonts.png}
+    \includegraphics[width=\linewidth]    {fig/performance_cvar.png}
     \caption{CVaR ($\lambda=0.0$).}
     \label{fig:alg-cvar}
 \end{subfigure}
-% \vspace{0.15cm}
 \caption{Algorithmic performance under different risk preferences. Each plot shows the cumulative proportion of instances solved to optimality as a function of computational time (left) and the cumulative distribution of final relative optimality gaps (right). }
 \label{fig:alg-performance}
 \end{figure}
@@ -1582,18 +1372,11 @@ The performance profiles provide further evidence of this advantage. As shown in
 A similar pattern emerges for the mean--CVaR setting
 ($\lambda=0.5$). B\&B-III solves 87.8\% of instances to optimality, compared with 78.5\% for CB\&B and 65.2\% for B\&B-II. It also reduces the mean computational time from 697.8\,s for CB\&B to 461.1\,s, while achieving a smaller mean final optimality gap (0.39\% versus 0.89\%). The corresponding distributions in Figure~\ref{fig:alg-mean-cvar} show that all B\&B-III instances finish with a gap below 5\%, including those not solved to optimality. These findings indicate that the benefits of the path-based inequalities persist when expected loss and tail risk are considered simultaneously.
 
-% Overall, B\&B-III achieves the strongest computational
-% performance across the complete benchmark, certifying
-% 84.9\% of instances to optimality, compared with
-% 77.3\% for CB\&B and 63.6\% for MILP. It also
-% achieves the lowest mean computational time (460.9\,s),
-% compared with 594.6\,s and 901.0\,s, respectively.
 
 The differences between methods become more pronounced as the firebreak budget increases. At $\alpha=0.03$, neither B\&B nor B\&B-I solves any of the 90 instances to optimality under any risk setting. In contrast, B\&B-III solves 90, 23, and 58 instances under expected loss, CVaR, and mean--CVaR, respectively. Larger budgets expand the set of feasible firebreak placements
 and increase the interactions among potential protection decisions. Consequently, weak recourse approximations may leave a large number of promising but overly optimistic solutions in the master relaxation. The dynamically separated inequalities help reduce
 this effect by exploiting the structure of wildfire propagation. The superior performance of B\&B-III at larger budgets suggests that explicit path information becomes particularly valuable as the placement decisions become more complex.
 
-% Increasing the number of scenarios also increases computational difficulty, particularly for risk-sensitive objectives. For B\&B-III, the number of optimal CVaR solutions decreases from 76 to 65 and 40 out of 90 as $n$ increases from 100 to 200 and 400, respectively. Under mean--CVaR, the corresponding counts are 89, 85, and 63. Larger scenario samples require additional recourse approximations and introduce more constraints linking scenario losses to the risk measure, increasing the computational burden of the master problem. In contrast, both B\&B-III and CB\&B solve every expected-loss instance to optimality at all three sample sizes, although their computational times increase with $n$.
 
 These results establish B\&B-III as the most effective variant of the proposed Branch-and-Benders framework. Its ability to exploit propagation-path information yields substantial improvements over the standard decomposition, particularly for larger firebreak budgets and risk-sensitive objectives. Although CB\&B remains the fastest method under expected-loss minimization, B\&B-III provides the strongest overall performance
 when tail risk is considered. Accordingly, the subsequent
@@ -1722,62 +1505,6 @@ produces firebreak locations geographically closer to those
 favored by CVaR minimization.
 
 
-% \subsection{Out-of-sample stability of SAA solutions}\label{sec:oos-stability}
-
-% We evaluate the Path-exp firebreak sets from five independent scenario
-% samples at each $(n,\alpha)$ on the same 1,000 reduced-graph test
-% scenarios, indexed by $s=9001,\ldots,10000$. For the loss $q_s(Y)$
-% under placement $Y$, define
-% \[
-%  \widehat\mu(Y)=\frac{1}{1000}\sum_s q_s(Y),\qquad
-%  \widehat C_{0.9}(Y)=\min_{z\in\mathbb R}
-%  \left\{z+\frac{1}{1000(1-0.9)}\sum_s(q_s(Y)-z)_+\right\}.
-% \]
-% The three reported test objectives are $\widehat\mu$,
-% $\widehat C_{0.9}$, and $0.5\widehat\mu+0.5\widehat C_{0.9}$.
-% Table~\ref{tab:new20-oos-stability} gives their means and sample
-% standard deviations over the five placements. Placement similarity
-% uses the original cell IDs and the ten within-group Jaccard indices
-% $J(Y_a,Y_b)=|Y_a\cap Y_b|/|Y_a\cup Y_b|$. The ten indices summarize
-% five sampled placements and are not independent replications.
-% Scenario samples at different $n$ are independently drawn, so the
-% comparisons across sizes are descriptive rather than paired by case.
-
-% \begin{table}[p]
-% \centering\footnotesize
-% \setlength{\tabcolsep}{4pt}
-% \caption{Held-out burned-area objective and placement similarity for
-% Path-exp. Each mean and sample SD uses five firebreak sets evaluated on
-% the fixed 1,000-scenario test set. Jaccard means and ranges use their
-% ten within-group pairs; ``Certified'' counts placements whose sampled
-% optimization reached the relative MIP gap $10^{-3}$, out of five.
-% All five feasible placements enter each row.}
-% \label{tab:new20-oos-stability}
-% \input{tables/new20_oos_stability}
-% \end{table}
-
-% The mean held-out objective generally improves as $n$ increases, with
-% smaller gains from 200 to 400 than from 100 to 200 scenarios. At
-% $\alpha=0.02$, expected loss falls from 94.95 to 91.87 and 91.73
-% burned cells; CVaR falls from 204.00 to 194.03 and 192.76; and
-% mean--CVaR falls from 155.42 to 144.22 and 143.44. The five-sample
-% SD also contracts in these three blocks, respectively from 2.99 to
-% 1.24, 3.58 to 3.06, and 4.89 to 1.40 between $n=100$ and 400.
-% Nevertheless, improvement is not uniform: at $\alpha=0.01$ the
-% mean--CVaR value rises from 202.17 at $n=200$ to 203.26 at
-% $n=400$. These patterns compare independent scenario samples with a
-% common test set, rather than paired increasing samples.
-
-% Firebreak sets need not become identical as the held-out objectives
-% converge. At $\alpha=0.01$, mean expected-loss Jaccard similarity
-% increases from 0.25 at $n=100$ to 0.51 at $n=400$, but for CVaR at
-% $\alpha=0.02$ it is 0.08, 0.27 and 0.22 at the three sizes.
-% The certification column limits the interpretation of risk-objective
-% trends: at $(\alpha,n)=(0.03,400)$ only 1/5 mean--CVaR and 0/5 CVaR
-% placements attain the requested tolerance. Their test outcomes
-% describe the feasible decisions found under the stopping rule; solver
-% error can contribute to both the OOS dispersion and Jaccard variation.
-
 \section{Conclusions}\label{sec:conclusions}
 
 This paper addressed the stochastic firebreak placement problem through
@@ -1833,21 +1560,6 @@ Overall, the results demonstrate that incorporating propagation-path
 structure into stochastic decomposition provides an effective approach
 to optimizing firebreak placement under uncertainty and risk aversion.
 
-% \section{Conclusions}\label{Sec:conclusions}
-% In this study, we introduce an innovative two-stage stochastic optimization model for the strategic placement of firebreaks, leveraging the spatially explicit scenarios generated by the Cell2Fire simulator. This addresses the inherent unpredictability associated with wildfire spread and behavior. Our proposal is capable of finding the optimal placement for a firebreak plan under the assumption of static fire behaviour and performs better than arbitrary configurations.
-
-% Our comprehensive computational analysis sheds light on the approach's robustness and efficacy. We have unveiled that balancing the expected damage (EV) against risk (CVaR) — particularly with a preference parameter of $\lambda=0.5$— significantly curtails the extent of the burn area, including in the most severe 10\% of cases. This balance illustrates the potential for a calculated approach to mitigate wildfire destruction effectively.
-
-% Further, our findings explain that while augmenting the number of firebreaks typically leads to a reduction in burned area, the benefits tend to decrease marginally beyond a certain threshold. This highlights the critical need for strategic placement over sheer quantity, considering environmental trade-offs such as carbon footprint and biodiversity impacts.
-
-% In addition, our proposed approach innovatively incorporates cell-specific weights within the model, empowering decision-makers to prioritize the protection of cells based on ecological value or proximity to human habitats. While the current experimental setup did not explore the nuances of this weighting parameter, it certainly opens up a vital avenue for future research. Analyzing how varying these weights impacts model outcomes can provide deeper understanding and more tailored strategies for wildfire management, particularly in areas of high conservation value or significant human interest.
-
-% Looking ahead, future research should delve into incorporating dynamic wildfire behavior into optimization models to enhance their practical applicability. Additionally, evaluating the model in a multi-period decision framework would account for the dynamic nature of forest landscapes, offering insights into the long-term strategic planning of firebreaks. In addition, to embed into evaluations the negative externalities produced by the treatments in the landscape, such as the impact on carbon emissions and reduction of biodiversity, among others.
-
-% From a computational perspective, the inclusion of additional scenarios contributes to improved results. However, the incremental advantages achieved become increasingly modest as the computational time required increases. This observation underscores the existence of a trade-off between the benefits of incorporating additional scenarios and the associated computational expenses. Therefore, future research should focus on developing algorithms that can effectively address larger landscapes and employ scenario-selective strategies to avoid unnecessary increases in the size of the optimization model.
-
-% In conclusion, our computational experiments have demonstrated the potential effectiveness of our mathematical model for firebreak placement in mitigating forest fire damage. This study shows that incorporating fire behavior software, such as Cell2Fire, proves to be a powerful tool by introducing actual fire spread dynamics into the optimization program. This integration enables selecting a highly effective firebreak placement configuration to face the challenging task of mitigating the spread of wildfires. Thus, the insights gained from our analysis of various scenarios and parameter settings contribute to understanding optimal firebreak allocation strategies. As we continue to refine and expand our understanding of this model, it holds promise for improving wildfire management strategies, ultimately minimizing the ecological, humanitarian, and economic impacts of wildfires.  
-
 
 \section*{Acknowledgments}
 This project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101037419 (\href{https://fire-res.eu}{FIRE-RES}) and the Complex Engineering Systems Institute (CONICYT-PIA-FB0816). Jaime Carrasco acknowledges the support of the ANID through funding Postdoctoral Fondecyt project No 3210311. Franco Quezada and Sebastián Dávila-Gálvez are grateful for the support of the National Agency for Research and Development (ANID) Chile through grant FONDECYT 11261130 and FONDECYT 11251766, respectively. Also, the authors gratefully acknowledge the research support provided by Dicyt project 062217DG, Vicerrector\'ia de Investigaci\'on, Desarrollo e Innovaci\'on, Universidad de Santiago de Chile. The authors gratefully acknowledge the contributions of David Palacios and Andr\'es Weintraub to earlier versions of this manuscript.
@@ -1855,26 +1567,6 @@ This project has received funding from the European Union’s Horizon 2020 resea
 \bibliographystyle{itor}
 
 \bibliography{references}
-
-
-
-% \clearpage
-% \appendix
-% \section{Appendix}
-% \begin{figure}[h]
-% \centering
-% \includegraphics[scale=.5]{figs/sub40.pdf}
-% \caption{Sub40 Forest.}
-% \label{fig:Sub40}
-% \end{figure}
-
-% \begin{figure}[h]
-% \centering
-% \includegraphics[scale=.5]{figs/sub100.pdf}
-% \caption{Sub100 Forest.}
-% \label{fig:Sub100}
-% \end{figure}
-
 
 
 \end{document}

@@ -1,20 +1,35 @@
-# ITOR submission version
+# ITOR submission sources
 
-This directory contains a self-contained ITOR-formatted version of the Firebreak Placement manuscript, based on `main_review.tex` on `main` at commit `dbe92065a33fb5d5d6bbf7e24692e0856637f966`.
+All manuscript text, equations, tables, algorithms, and captions are contained
+in `main.tex`. The five figures are in the adjacent `fig/` directory.
 
-The research text and section structure, equations, labels, tables, figures, and citations are preserved. The front matter uses the agreed title, abstract, and keywords. The LaTeX class `itor.cls` and bibliography style `itor.bst` are unmodified copies of the supplied ITOR template.
+ITOR's required class `itor.cls` and bibliography style `itor.bst` are
+retained unmodified. `references.bib` remains separate, as recommended
+by Wiley for production.
 
-## Compilation
+## Compile
 
-Run in this directory:
+From this directory, run
 
 ```sh
-pdflatex -interaction=nonstopmode main.tex
-bibtex main
-pdflatex -interaction=nonstopmode main.tex
-pdflatex -interaction=nonstopmode main.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 ```
 
-Alternatively, `latexmk -pdf main.tex` can handle the passes on a full TeX installation. For submission, include the compiled PDF and all sources in this directory.
+Or use the traditional sequence `pdflatex main.tex`, `bibtex main`,
+`pdflatex main.tex`, `pdflatex main.tex`.
 
-Volume, journal year, and DOI metadata are deliberately left blank for the ITOR production editor. The root manuscript `main_review.tex` has not been modified.
+## Upload through Wiley Research Exchange
+
+A GitHub Actions workflow named `ITOR submission build` compiles the paper
+and creates a ready-to-upload source ZIP. Download the
+`ITOR_submission-ready` workflow artifact containing `main.pdf`
+and `ITOR_submission_sources.zip`.
+
+Wiley permits a ZIP of LaTeX sources, including referenced figures and
+style/bibliography files, together with the compiled PDF.
+The ZIP contains exactly `main.tex`, `itor.cls`, `itor.bst`,
+`references.bib`, and `fig/`. Its root contains `main.tex`.
+Do not upload logs, auxiliary files, or this README.
+
+The ITOR guidelines specify a maximum of 25 pages and 150 abstract words.
+Check the PDF page count before submission.
