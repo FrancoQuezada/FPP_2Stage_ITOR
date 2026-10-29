@@ -25,18 +25,20 @@
 \begin{document}
 \title{A risk-averse two-stage stochastic firebreak placement problem:
 Graph-based valid inequalities and exact decomposition}
-\author[Vilches et al.]{Mat\'ias Vilches\affmark{a}, Franco Quezada\affmark{a,b,$\ast$}, Sebasti\'an D\'avila-G\'alvez\affmark{a,b} and Jaime Carrasco\affmark{c,d}}
+
+\author[Quezada et al.]{Franco Quezada\affmark{a,b,$\ast$}, Mat\'ias Vilches\affmark{a}, Sebasti\'an D\'avila-G\'alvez\affmark{a,b} and Jaime Carrasco\affmark{c,d}}
+
 \affil{\affmark{a}Industrial Engineering Department, Faculty of Engineering, University of Santiago of Chile, Santiago, Chile}
 \affil{\affmark{b}Program for the Development of Sustainable Production Systems, Faculty of Engineering, University of Santiago of Chile, Santiago, Chile}
 \affil{\affmark{c}Departamento de Industria, Facultad de Ingenier\'ia, Universidad Tecnol\'ogica Metropolitana, Santiago, Chile}
 \affil{\affmark{d}Complex Engineering Systems Institute -- ISCI, Santiago, Chile}
-\email{matias.vilches.a@usach.cl [M. Vilches]; franco.quezada@usach.cl [F. Quezada];\\ sebastian.davila@usach.cl [S. D\'avila-G\'alvez]; jcarrascob@utem.cl [J. Carrasco]}
+\email{franco.quezada@usach.cl [F. Quezada];matias.vilches.a@usach.cl [M. Vilches];\\ sebastian.davila@usach.cl [S. D\'avila-G\'alvez]; jcarrascob@utem.cl [J. Carrasco]}
 \thanks{\affmark{$\ast$}Corresponding author: franco.quezada@usach.cl.}
 
 \begin{abstract}
-Wildfire prevention requires strategic firebreak placement decisions that account for uncertainty in fire ignition and propagation, as well as the potentially severe consequences of extreme events. We formulate the Firebreak Placement Problem as a risk-averse two-stage stochastic program that minimizes a weighted combination of expected wildfire loss and Conditional Value-at-Risk (CVaR). Wildfire scenarios generated using Cell2Fire are represented by directed propagation graphs, enabling the evaluation of firebreak placements under different propagation patterns. To solve the resulting stochastic optimization problem, we develop an exact Branch-and-Benders decomposition framework strengthened by two families of graph-based valid inequalities exploiting downstream coverage and directed propagation paths. We establish their validity for general directed graphs and show that the complete family of path-based inequalities characterizes the linear programming recourse function for fractional firebreak decisions. Computational experiments on 810 instances demonstrate that the path-strengthened algorithm achieves the highest overall optimality certification rate (84.9\%), compared with 77.3\% for a state-of-the-art combinatorial Branch-and-Benders approach and 63.6\% for the extensive mixed-integer formulation. Its computational advantages are particularly pronounced under risk-sensitive objectives, while the combinatorial benchmark is faster under expected-loss minimization. Out-of-sample evaluations further examine the effects of scenario sample size, firebreak intensity, and risk preferences on solution quality and stability.
+Firebreak placement must account for uncertainty in wildfire ignition and propagation and the consequences of extreme events. We formulate the Firebreak Placement Problem as a risk-averse two-stage stochastic program minimizing a weighted combination of expected loss and Conditional Value-at-Risk (CVaR). Wildfire scenarios from Cell2Fire are represented by directed propagation graphs. We develop an exact Branch-and-Benders decomposition framework strengthened by two families of graph-based valid inequalities exploiting downstream coverage and propagation paths. We prove their validity for general directed graphs and show that the complete path-based family characterizes the linear programming recourse function under fractional firebreak decisions. Experiments on 810 instances show that the path-strengthened algorithm achieves an optimality certification rate of 84.9\%, compared with 77.3\% for a combinatorial Branch-and-Benders benchmark and 63.6\% for the extensive mixed-integer formulation. Its advantages are strongest under risk-sensitive objectives, while the combinatorial benchmark is faster for expected-loss minimization. 
 \end{abstract}
-\keywords{Firebreak placement; Two-stage stochastic programming; Conditional Value-at-Risk; Branch-and-Benders decomposition; Graph-based valid inequalities}
+\keywords{Firebreak placement; Two-stage stochastic programming; Conditional Value-at-Risk; Branch-and-Benders decomposition; Graph-based valid inequalities; }
 \maketitle
 
 \section{Introduction}
@@ -415,9 +417,9 @@ $\bar{\Phi}(\vb{y}^2,\vb{1})=73$.
 Thus, $\vb{y}^2$ provides greater protection
 than $\vb{y}^1$ for the illustrated scenario.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
-\includegraphics[scale=.5]{figs/example1_sub20_and_weather.pdf}
+\includegraphics[scale=.45]{figs/example1_sub20_and_weather.pdf}
 \vspace{1ex}
 \caption{\textbf{A}: Graph representation of the
 landscape and an example wildfire;
@@ -425,9 +427,9 @@ landscape and an example wildfire;
 \label{fig:graphs_landscape}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[scale=.5]{figs/example2_efficients_firebreaks.pdf}
+\includegraphics[scale=.45]{figs/example2_efficients_firebreaks.pdf}
 \vspace{1ex}
 \caption{Comparison of two firebreak configurations
 under the same wildfire scenario.
@@ -435,7 +437,7 @@ Configuration \textbf{B} prevents more cells
 from burning than configuration \textbf{A}.}
 \label{fig:graphs}
 \end{figure}
-\FloatBarrier
+
 
 \subsection{Conditional Value-at-Risk}
 
@@ -650,6 +652,7 @@ $\eta^\omega$ to linearize the CVaR term.
 
 The resulting formulation is given by
 %
+\allowdisplaybreaks{
 \begin{subequations}
 \label{m:fpp}
 \begin{align}
@@ -714,7 +717,7 @@ v\in\mathcal{V}^\omega.
 \label{c:variables}
 \end{align}
 \end{subequations}
-
+}
 The objective function \eqref{fo:min_expected4} minimizes
 a convex combination of expected wildfire loss and CVaR.
 When $\lambda=1$, the formulation minimizes expected loss,
@@ -968,9 +971,7 @@ One limitation of the Branch-and-Benders framework is that weak initial approxim
 
 A lower bound on the scenario recourse cost can be obtained by estimating the maximum protection that a firebreak configuration could provide. The underlying idea is to identify the cells potentially protected by each firebreak and subtract their associated values from the wildfire loss without intervention. Since this estimate may overstate the actual protection, the resulting expression provides a lower bound on the recourse cost.
 
-For each scenario $\omega \in \Omega$, let $R^\omega(\vb{y})$ denote the set of cells reachable from the ignition node $v(\omega)$ under a binary firebreak configuration $\vb{y}$. In particular, $R^\omega(\vb{0})$ represents the cells burned in the absence of firebreaks.
-
-For each $v \in R^\omega(\vb{0}) \setminus \{v(\omega)\}$, we define its downstream set as
+For each scenario $\omega \in \Omega$, let $R^\omega(\vb{y})$ denote the set of cells reachable from the ignition node $v(\omega)$ under a binary firebreak configuration $\vb{y}$. In particular, $R^\omega(\vb{0})$ represents the cells burned in the absence of firebreaks. For each $v \in R^\omega(\vb{0}) \setminus \{v(\omega)\}$, we define its downstream set as
 %
 \begin{equation}
 \label{eq:downstream_set}
@@ -1031,7 +1032,7 @@ $k \in D^\omega(v_j)$. Since $y_v \geq 0$, we obtain $x_k^\omega \geq
 Q^\omega(\vb{y})
 &\geq
 \sum_{k \in U}w_k x_k^\omega
-\nonumber\\
+\nonumber
 &\geq
 \sum_{k \in U}w_k
 \left(
@@ -1039,7 +1040,7 @@ Q^\omega(\vb{y})
 \sum_{\substack{v \in \mathcal{V}:\\
 k \in D^\omega(v)}}y_v
 \right)
-\nonumber\\
+\nonumber
 &=
 \sum_{k \in U}w_k
 -
@@ -1155,10 +1156,10 @@ every feasible second-stage solution satisfies
 %
 \begin{align*}
 \sum_{k \in \mathcal{V}^\omega}w_k x_k^\omega
-&\geq
+\geq
 \sum_{k \in U}w_k x_k^\omega
-\nonumber\\
-&\geq
+\nonumber
+\geq
 \sum_{k \in U}w_k
 -
 \sum_{k \in U}w_k
@@ -1236,8 +1237,8 @@ $\sum_{\substack{v\in\mathcal V: k\in D^\omega(v)}}\bar y_v<1$. Thus, the strong
 identified without enumerating the subsets of
 $R^\omega(\vb{0})$. Algorithm~\ref{alg:separate_coverage}
 summarizes this procedure.
-
-\begin{algorithm}[h]
+\allowdisplaybreaks{
+\begin{algorithm}[htbp]
 \caption{Separation of \eqref{eq:coverage_projected}}
 \label{alg:separate_coverage}
 \begin{algorithmic}[1]
@@ -1275,7 +1276,7 @@ downstream sets $D^\omega(v)$, tolerance $\varepsilon$
 \State \Return $\emptyset$
 \end{algorithmic}
 \end{algorithm}
-
+}
 
 Separation of \eqref{eq:path-proj} requires identifying a
 propagation path for each cell. Since the number of directed
@@ -1298,7 +1299,8 @@ A cell contributes to the resulting inequality only if
 this minimum cost is strictly less than one. Algorithm~\ref{alg:separate_paths} describes the separation
 procedure.
 
-\begin{algorithm}[t]
+\allowdisplaybreaks{
+\begin{algorithm}[htbp]
 \caption{Separation of \eqref{eq:path-proj}}
 \label{alg:separate_paths}
 \begin{algorithmic}[1]
@@ -1344,11 +1346,10 @@ path limit $P_{\max}$, tolerance $\varepsilon$
     $\displaystyle\theta^\omega\geq
     a^\omega-\sum_{v\in\mathcal V}c_v^\omega y_v$
 \EndIf
-
 \State \Return $\emptyset$
 \end{algorithmic}
 \end{algorithm}
-
+}
 The two procedures differ in the information used to
 construct their inequalities. Algorithm~\ref{alg:separate_coverage}
 uses the downstream sets of candidate firebreak locations
@@ -1400,7 +1401,7 @@ cuts without solving scenario LPs. The distinguishing
 features of the methods are summarized in
 Table~\ref{tab:methods}.
 
-\begin{table}[t]
+\begin{table}[htbp]
 \centering
 \normalfont
 \caption{Optimization methods considered in the computational experiments.}
@@ -1447,7 +1448,7 @@ combinatorial procedures without solving scenario LPs.
 
 All experiments were conducted using IBM ILOG CPLEX Optimization
 Studio 22.1.1, with one thread, a time limit of 1,800 seconds, and
-a relative MIP optimality gap tolerance of $10^{-3}$. Apart from these settings and the method-specific cut-generation procedures, default CPLEX parameters were retained.
+a relative MIP optimality gap tolerance of $10^{-3}$. Apart from these settings and the method-specific cut-generation procedures, default CPLEX parameters were retained. The source code implementing the proposed algorithms and computational experiments is publicly available at \url{https://github.com/FrancoQuezada/stochastic-firebreak-placement}.
 
 Computational performance is assessed through solution times,
 final optimality gaps, and the percentage of instances certified
@@ -1468,17 +1469,10 @@ risk preferences.
 
 Table~\ref{tab:new20-gaps-times} compares the six methods across the three risk-weighting settings. For each method and risk setting, the proportion of instances solved to optimality is calculated over 270 instances. Reported optimality gaps and solver times include both optimal and time-limited instances. 
 
-\begin{center}
-\begin{minipage}{\linewidth}
-\centering
-
-\captionof{table}{Algorithmic performance on 270 instances per method and value of $\lambda$. 
-Mean and maximum final gaps are reported in percent, and mean observed solver time in seconds.}
-\label{tab:new20-gaps-times}
-
-\setlength{\tabcolsep}{5pt}
-\renewcommand{\arraystretch}{1.08}
-
+\begin{table}[htbp]
+    \centering
+    \caption{Algorithmic performance on 270 instances per method and value of $\lambda$. Mean and maximum final gaps are reported in percent, and mean observed solver time in seconds.}
+    \label{tab:new20-gaps-times}
 \begin{tabular}{@{}clrrrr@{}}
 \toprule
 $\lambda$ & Method & Optimal (\%) & Mean gap (\%) & Max. gap (\%) & Mean time (s) \\
@@ -1508,8 +1502,7 @@ $\lambda$ & Method & Optimal (\%) & Mean gap (\%) & Max. gap (\%) & Mean time (s
  & CB\&B     & 53.3 & 3.02 & 18.08 & 1057.5 \\
 \bottomrule
 \end{tabular}
-\end{minipage}
-\end{center}
+\end{table}
 
 For expected-loss minimization ($\lambda=1$), MILP, B\&B-III, and CB\&B
 solve all 270 instances to optimality. CB\&B achieves the lowest mean
@@ -1544,10 +1537,10 @@ function and substantially improves computational performance.
 For instance, under expected loss, the proportion of optimal
 solutions increases from 65.2\% with B\&B to 95.6\% with B\&B-II.
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
 \centering
 % (a) Expected loss
-\begin{subfigure}{0.8\linewidth}
+\begin{subfigure}{0.7\linewidth}
     \centering
     \includegraphics[width=\linewidth]
     {figs/profile_20x20_Expected_N100_200_400_all_alpha_no_poly_balanced_fonts.png}
@@ -1556,7 +1549,7 @@ solutions increases from 65.2\% with B\&B to 95.6\% with B\&B-II.
 \end{subfigure}
 % \vspace{0.15cm}
 % (c) Mean-CVaR
-\begin{subfigure}{0.8\linewidth}
+\begin{subfigure}{0.7\linewidth}
     \centering
     \includegraphics[width=\linewidth]
     {figs/profile_20x20_MeanCVaR_N100_200_400_all_alpha_no_poly_balanced_fonts.png}
@@ -1564,7 +1557,7 @@ solutions increases from 65.2\% with B\&B to 95.6\% with B\&B-II.
     \label{fig:alg-mean-cvar}
 \end{subfigure}
 % (b) CVaR
-\begin{subfigure}{0.8\linewidth}
+\begin{subfigure}{0.7\linewidth}
     \centering
     \includegraphics[width=\linewidth]    {figs/profile_20x20_CVaR_N100_200_400_all_alpha_no_poly_balanced_fonts.png}
     \caption{CVaR ($\lambda=0.0$).}
@@ -1605,7 +1598,7 @@ Increasing the number of scenarios also increases computational difficulty, part
 These results establish B\&B-III as the most effective variant of the proposed Branch-and-Benders framework. Its ability to exploit propagation-path information yields substantial improvements over the standard decomposition, particularly for larger firebreak budgets and risk-sensitive objectives. Although CB\&B remains the fastest method under expected-loss minimization, B\&B-III provides the strongest overall performance
 when tail risk is considered. Accordingly, the subsequent
 out-of-sample analysis uses B\&B-III to evaluate firebreak placements obtained through a common optimization procedure.
-\FloatBarrier
+% \FloatBarrier
 
 \subsection{Out-of-sample performance and solution stability}\label{sec:oos-stability}
 
@@ -1618,7 +1611,7 @@ we compute
 \begin{aligned}
 \widehat\mu(Y) &= \frac{1}{1000}\sum_s q_s(Y), \quad
 \widehat C_{0.9}(Y) &= \min_{z\in\mathbb R}
-\left\{z+\frac{1}{1000(1-0.9)}\sum_s(q_s(Y)-z)_+\right\},\quad
+\left\{z+\frac{1}{1000(1-0.9)}\sum_s(q_s(Y)-z)_+\right\},\quad\\
 \widehat F_\lambda(Y) &= \lambda\widehat\mu(Y)
  +(1-\lambda)\widehat C_{0.9}(Y).
 \end{aligned}
@@ -1634,7 +1627,37 @@ solved to optimality, and the mean pairwise Jaccard index. The
 independent replications. All feasible placements enter the analysis,
 including those not solved to the prescribed optimality tolerance.
 
-\begin{table}[!htbp]
+
+Larger scenario samples generally improve out-of-sample performance and
+reduce its sensitivity to the sampled wildfire scenarios. At
+$\alpha=0.02$, the mean expected loss under $\lambda=1$ decreases from
+93.46 to 91.92 and 91.59 burned cells as $n$ increases from 100 to
+200 and 400, while its sample standard deviation falls from 2.12 to
+0.99. The mean--CVaR objective ($\lambda=0.5$) decreases from 149.68
+to 145.68 and 143.56, with its standard deviation falling from 5.41
+to 1.50. The reductions in mean loss are smaller between $n=200$ and
+$n=400$ than between $n=100$ and $n=200$, suggesting diminishing
+improvements from additional optimization scenarios within the tested
+range. Greater sample sizes provide more information about propagation
+uncertainty, reducing the influence of a particular scenario
+sample on the chosen decision. The improvement is not uniformly
+monotonic, however: at $\alpha=0.01$ the mean held-out mean--CVaR
+objective decreases from 205.38 to 202.68 and then rises slightly
+to 203.22. Comparisons across $n$ use separately generated scenario
+samples rather than nested samples.
+
+The reductions in out-of-sample dispersion are especially apparent
+for tail-risk objectives. At $\alpha=0.01$, the standard deviation of
+held-out CVaR decreases from 9.22 to 2.38 between $n=100$ and $n=400$,
+with all 30 sampled problems solved to optimality at both sizes.
+The discrepancy between in-sample and held-out CVaR also narrows:
+their respective mean values are 253.94 and 274.86 at $n=100$,
+compared with 262.76 and 268.22 at $n=400$. The smaller difference
+is consistent with a reduction in the sampling optimism of the
+empirical tail-risk objective. These patterns concern the stability
+of attained losses, which need not imply similar firebreak locations.
+
+\begin{table}[htbp]
 \centering
 \caption{Out-of-sample performance and spatial stability of B\&B-III
 placements. Each configuration has 30 solutions evaluated on the same
@@ -1690,34 +1713,6 @@ $\lambda$ & $\alpha$ & $n$ & $\widehat\mu$ & $\widehat C_{0.9}$ & $\widehat F_\l
 \end{tabular}
 \end{table}
 
-Larger scenario samples generally improve out-of-sample performance and
-reduce its sensitivity to the sampled wildfire scenarios. At
-$\alpha=0.02$, the mean expected loss under $\lambda=1$ decreases from
-93.46 to 91.92 and 91.59 burned cells as $n$ increases from 100 to
-200 and 400, while its sample standard deviation falls from 2.12 to
-0.99. The mean--CVaR objective ($\lambda=0.5$) decreases from 149.68
-to 145.68 and 143.56, with its standard deviation falling from 5.41
-to 1.50. The reductions in mean loss are smaller between $n=200$ and
-$n=400$ than between $n=100$ and $n=200$, suggesting diminishing
-improvements from additional optimization scenarios within the tested
-range. Greater sample sizes provide more information about propagation
-uncertainty, reducing the influence of a particular scenario
-sample on the chosen decision. The improvement is not uniformly
-monotonic, however: at $\alpha=0.01$ the mean held-out mean--CVaR
-objective decreases from 205.38 to 202.68 and then rises slightly
-to 203.22. Comparisons across $n$ use separately generated scenario
-samples rather than nested samples.
-
-The reductions in out-of-sample dispersion are especially apparent
-for tail-risk objectives. At $\alpha=0.01$, the standard deviation of
-held-out CVaR decreases from 9.22 to 2.38 between $n=100$ and $n=400$,
-with all 30 sampled problems solved to optimality at both sizes.
-The discrepancy between in-sample and held-out CVaR also narrows:
-their respective mean values are 253.94 and 274.86 at $n=100$,
-compared with 262.76 and 268.22 at $n=400$. The smaller difference
-is consistent with a reduction in the sampling optimism of the
-empirical tail-risk objective. These patterns concern the stability
-of attained losses, which need not imply similar firebreak locations.
 
 The spatial comparison reveals a complementary pattern: increasing the
 number of optimization scenarios raises the mean Jaccard similarity in
@@ -1901,7 +1896,7 @@ to optimizing firebreak placement under uncertainty and risk aversion.
 
 
 \section*{Acknowledgments}
-This project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101037419 (\href{https://fire-res.eu}{FIRE-RES}) and the Complex Engineering Systems Institute (CONICYT-PIA-FB0816). \textbf{JC} acknowledges the support of the ANID through funding Postdoctoral Fondecyt project No 3210311. Also, the authors gratefully acknowledge the research support provided by Dicyt project 062217DG, Vicerrector\'ia de Investigaci\'on, Desarrollo e Innovaci\'on, Universidad de Santiago de Chile.
+This project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101037419 (\href{https://fire-res.eu}{FIRE-RES}) and the Complex Engineering Systems Institute (CONICYT-PIA-FB0816). Jaime Carrasco acknowledges the support of the ANID through funding Postdoctoral Fondecyt project No 3210311. Franco Quezada and Sebastián Dávila-Gálvez are grateful for the support of the National Agency for Research and Development (ANID) Chile through grant FONDECYT 11261130 and FONDECYT 11251766, respectively. Also, the authors gratefully acknowledge the research support provided by Dicyt project 062217DG, Vicerrector\'ia de Investigaci\'on, Desarrollo e Innovaci\'on, Universidad de Santiago de Chile. The authors gratefully acknowledge the contributions of David Palacios and Andr\'es Weintraub to earlier versions of this manuscript.
 
 \bibliographystyle{itor}
 
