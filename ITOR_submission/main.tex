@@ -1466,7 +1466,11 @@ risk preferences.
 
 \subsection{Algorithmic performance}\label{sec:results}
 
-Table~\ref{tab:new20-gaps-times} compares the six methods across the three risk-weighting settings. For each method and risk setting, the proportion of instances solved to optimality is calculated over 270 instances. Reported optimality gaps and solver times include both optimal and time-limited instances. 
+Table~\ref{tab:new20-gaps-times} compares optimality certification rates,
+final optimality gaps, and running times for the six methods across the
+three risk preferences, using 270 instances per setting.
+Figure~\ref{fig:alg-performance} complements these aggregates with
+certification-time and final-gap profiles.
 
 \begin{center}
 \begin{minipage}{\linewidth}
@@ -1511,38 +1515,28 @@ $\lambda$ & Method & Optimal (\%) & Mean gap (\%) & Max. gap (\%) & Mean time (s
 \end{minipage}
 \end{center}
 
-For expected-loss minimization ($\lambda=1$), MILP, B\&B-III, and CB\&B
-solve all 270 instances to optimality. CB\&B achieves the lowest mean
-computational time (28.4\,s), followed by B\&B-III (71.3\,s) and MILP
-(178.4\,s). The advantage of CB\&B is consistent with its combinatorial
-treatment of the scenario subproblems. For a fixed firebreak placement,
-wildfire losses can be evaluated directly through graph reachability,
-allowing CB\&B to generate optimality cuts without repeatedly solving
-linear programming subproblems. Moreover, under expected-loss
-minimization, scenario losses contribute linearly to the objective,
-without the additional constraints associated with CVaR. This
-combination may explain the efficiency of combinatorial cut generation
-in this setting. As shown in Figure~\ref{fig:alg-expected},
-CB\&B reaches a high proportion of optimal solutions considerably
-earlier than the other methods. Nevertheless, B\&B-III also solves
-every instance to optimality and requires less than half the average
-computational time of MILP, demonstrating the effectiveness of the
-proposed decomposition framework.
+Under expected-loss minimization ($\lambda=1$), MILP, B\&B-III,
+and CB\&B certify all 270 instances. CB\&B is the fastest, with a mean
+running time of 28.4\,s, compared with 71.3\,s for B\&B-III and
+178.4\,s for MILP. This advantage is consistent with its direct
+evaluation of wildfire losses by graph reachability, avoiding LP
+scenario subproblems. The profiles in Figure~\ref{fig:alg-expected}
+confirm that CB\&B certifies most instances earlier. Nevertheless,
+B\&B-III solves all instances in less than half the mean time of MILP.
 
-The comparison among the Branch-and-Benders variants highlights the
-importance of strengthening the scenario recourse approximations.
-Adding the static inequality \eqref{eq:llbi} in
-B\&B-I provides limited and inconsistent improvements
-over the standard B\&B approach. This limited effect is consistent
-with the construction of the inequality, which may substantially
-underestimate scenario losses when downstream sets overlap.
-In contrast, B\&B-II dynamically separates
-\eqref{eq:coverage_projected}, selecting the cells that contribute
-positively to the lower bound at the current fractional solution.
-This produces a more informative approximation of the recourse
-function and substantially improves computational performance.
-For instance, under expected loss, the proportion of optimal
-solutions increases from 65.2\% with B\&B to 95.6\% with B\&B-II.
+The comparison of decomposition variants reveals the importance
+of stronger recourse approximations. The static inequality
+\eqref{eq:llbi} used by B\&B-I offers no consistent improvement
+over standard B\&B. In contrast, dynamically separated coverage
+inequalities \eqref{eq:coverage_projected} increase the expected-loss
+certification rate from 65.2\% with B\&B to 95.6\% with B\&B-II.
+Path-based inequalities \eqref{eq:path-proj} in B\&B-III increase
+it further to 100\%. Unlike downstream coverage estimates, path
+inequalities account for alternative propagation routes, limiting
+overly optimistic recourse estimates when several routes reach the
+same cell. This stronger approximation can offset the additional
+separation effort and is particularly valuable under risk-sensitive
+objectives.
 
 \begin{figure}[!htbp]
 \centering
@@ -1575,36 +1569,59 @@ solutions increases from 65.2\% with B\&B to 95.6\% with B\&B-II.
 \label{fig:alg-performance}
 \end{figure}
 
-B\&B-III achieves further improvements by exploiting explicit propagation paths through inequalities \eqref{eq:path-proj}. Unlike downstream sets, which identify cells potentially protected by a firebreak, propagation paths provide information about the
-alternative routes through which fire can reach a destination. This distinction is particularly relevant in graphs containing multiple propagation routes, where treating a cell does not necessarily prevent fire from reaching its downstream vertices. By accounting for these routes, the inequalities can provide tighter
-lower bounds on scenario losses. Indeed, the complete family \eqref{eq:path-proj} characterizes the fractional recourse function, although the implemented separation procedure considers only a restricted collection of paths. The computational advantage of
-B\&B-III is consistent with these stronger recourse approximations,
-which can compensate for the additional effort required to
-generate the inequalities.
+Under pure CVaR minimization ($\lambda=0$), B\&B-III certifies
+67.0\% of instances, compared with 53.3\% for CB\&B and 50.0\%
+for B\&B-II. It also attains the lowest mean final gap (1.44\%)
+and running time (850.2\,s). Figure~\ref{fig:alg-cvar} shows that
+B\&B-II initially certifies instances faster, but B\&B-III
+eventually overtakes it, indicating a stronger advantage on
+difficult instances. Since CVaR emphasizes adverse scenario
+losses, tighter scenario-level recourse bounds provide more
+effective information for the master problem. The benefits
+therefore extend beyond faster certification to improved
+final bounds on the instances left unresolved.
 
-The benefits of B\&B-III become particularly pronounced when tail risk is incorporated into the objective. Under CVaR minimization ($\lambda=0$), B\&B-III solves 67.0\% of instances to optimality, compared with 53.3\% for CB\&B and 50.0\% for B\&B-II. It also achieves the lowest mean optimality gap (1.44\%) and computational time (850.2\,s). Unlike expected-loss minimization, CVaR explicitly emphasizes scenarios whose losses exceed a common risk threshold. Consequently, inaccurate recourse approximations may underestimate both the losses in these scenarios and their contribution to the tail-risk objective. Strengthening the scenario-level lower bounds may therefore be especially valuable for the master problem. This provides a possible explanation for the improved relative performance of B\&B-III compared with CB\&B as risk aversion increases.
+With mean--CVaR ($\lambda=0.5$), B\&B-III certifies 87.8\%
+of instances, versus 78.5\% for CB\&B and 65.2\% for B\&B-II.
+Its mean final gap is 0.39\%, compared with 0.89\% for CB\&B,
+while mean running time falls from 697.8\,s to 461.1\,s.
+The final-gap profiles in Figure~\ref{fig:alg-mean-cvar}
+further show that B\&B-III maintains tight bounds even for
+instances without optimality certification. Thus, path-based
+strengthening remains effective when average and tail losses
+are considered jointly.
 
-The performance profiles provide further evidence of this advantage. As shown in Figure~\ref{fig:alg-cvar}, B\&B-II initially solves a larger proportion of CVaR instances than B\&B-III, but the latter overtakes it as computational time increases. This behavior suggests that the additional separation effort of B\&B-III is compensated by its ability to solve more difficult instances. Furthermore, approximately 88\% of instances solved by B\&B-III finish with an optimality gap below 5\%, compared with 69\% for CB\&B. Thus, its advantage extends beyond the proportion of optimal solutions to the quality of the final optimality bounds.
+The advantage of the strengthened decomposition is especially
+apparent at higher firebreak intensities. At $\alpha=0.03$,
+neither B\&B nor B\&B-I certifies any instance across the
+three risk settings, whereas B\&B-III certifies 90 expected-loss,
+58 mean--CVaR, and 23 CVaR instances, out of 90 per objective.
+Larger budgets permit more interacting firebreak placements,
+making weak recourse bounds less effective at guiding the search.
+The improved performance of B\&B-III indicates that explicit
+path information is particularly valuable as placement
+decisions become more complex.
 
-A similar pattern emerges for the mean--CVaR setting
-($\lambda=0.5$). B\&B-III solves 87.8\% of instances to optimality, compared with 78.5\% for CB\&B and 65.2\% for B\&B-II. It also reduces the mean computational time from 697.8\,s for CB\&B to 461.1\,s, while achieving a smaller mean final optimality gap (0.39\% versus 0.89\%). The corresponding distributions in Figure~\ref{fig:alg-mean-cvar} show that all B\&B-III instances finish with a gap below 5\%, including those not solved to optimality. These findings indicate that the benefits of the path-based inequalities persist when expected loss and tail risk are considered simultaneously.
+Increasing the number of scenarios is particularly challenging
+under risk-sensitive objectives. For B\&B-III, the number
+of certified CVaR instances falls from 76 to 65 and 40 out of
+90 as $n$ increases from 100 to 200 and 400, respectively.
+Under mean--CVaR, the corresponding counts are 89, 85, and 63.
+In contrast, B\&B-III and CB\&B certify every expected-loss
+instance at all three sample sizes. The results highlight
+the additional computational burden of handling more
+scenario losses within a tail-risk objective.
 
-Overall, B\&B-III achieves the strongest computational
-performance across the complete benchmark, certifying
-84.9\% of instances to optimality, compared with
-77.3\% for CB\&B and 63.6\% for MILP. It also
-achieves the lowest mean computational time (460.9\,s),
-compared with 594.6\,s and 901.0\,s, respectively.
+Overall, B\&B-III achieves the highest certification rate across
+the 810-instance benchmark at 84.9\%, compared with 77.3\%
+for CB\&B and 63.6\% for MILP. Its mean running time is also
+the lowest at 460.9\,s, versus 594.6\,s and 901.0\,s,
+respectively. While CB\&B retains a clear speed advantage
+under expected-loss minimization, B\&B-III leads under
+both risk-sensitive objectives. We therefore use B\&B-III
+to evaluate firebreak placements in the out-of-sample
+analysis of Section~\ref{sec:oos-stability}.
 
-The differences between methods become more pronounced as the firebreak budget increases. At $\alpha=0.03$, neither B\&B nor B\&B-I solves any of the 90 instances to optimality under any risk setting. In contrast, B\&B-III solves 90, 23, and 58 instances under expected loss, CVaR, and mean--CVaR, respectively. Larger budgets expand the set of feasible firebreak placements
-and increase the interactions among potential protection decisions. Consequently, weak recourse approximations may leave a large number of promising but overly optimistic solutions in the master relaxation. The dynamically separated inequalities help reduce
-this effect by exploiting the structure of wildfire propagation. The superior performance of B\&B-III at larger budgets suggests that explicit path information becomes particularly valuable as the placement decisions become more complex.
-
-Increasing the number of scenarios also increases computational difficulty, particularly for risk-sensitive objectives. For B\&B-III, the number of optimal CVaR solutions decreases from 76 to 65 and 40 out of 90 as $n$ increases from 100 to 200 and 400, respectively. Under mean--CVaR, the corresponding counts are 89, 85, and 63. Larger scenario samples require additional recourse approximations and introduce more constraints linking scenario losses to the risk measure, increasing the computational burden of the master problem. In contrast, both B\&B-III and CB\&B solve every expected-loss instance to optimality at all three sample sizes, although their computational times increase with $n$.
-
-These results establish B\&B-III as the most effective variant of the proposed Branch-and-Benders framework. Its ability to exploit propagation-path information yields substantial improvements over the standard decomposition, particularly for larger firebreak budgets and risk-sensitive objectives. Although CB\&B remains the fastest method under expected-loss minimization, B\&B-III provides the strongest overall performance
-when tail risk is considered. Accordingly, the subsequent
-out-of-sample analysis uses B\&B-III to evaluate firebreak placements obtained through a common optimization procedure.
 \FloatBarrier
 
 \subsection{Out-of-sample performance and solution stability}\label{sec:oos-stability}
