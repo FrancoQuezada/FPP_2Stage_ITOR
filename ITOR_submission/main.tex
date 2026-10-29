@@ -1609,30 +1609,20 @@ out-of-sample analysis uses B\&B-III to evaluate firebreak placements obtained t
 
 \subsection{Out-of-sample performance and solution stability}\label{sec:oos-stability}
 
-We assess the firebreak placements obtained with B\&B-III from 30 independent
-scenario samples for each $(n,\alpha,\lambda)$ configuration. Every feasible
-placement is evaluated on the same 1,000 wildfire scenarios, independent of
-the scenario samples. For the realized loss $q_s(Y)$ under placement $Y$,
-we compute
-\[
-\begin{aligned}
-\widehat\mu(Y) &= \frac{1}{1000}\sum_s q_s(Y), \quad
-\widehat C_{0.9}(Y) &= \min_{z\in\mathbb R}
-\left\{z+\frac{1}{1000(1-0.9)}\sum_s(q_s(Y)-z)_+\right\},\quad
-\widehat F_\lambda(Y) &= \lambda\widehat\mu(Y)
- +(1-\lambda)\widehat C_{0.9}(Y).
-\end{aligned}
-\]
-For placement stability, we use the Jaccard index
-$J(Y_a,Y_b)=|Y_a\cap Y_b|/|Y_a\cup Y_b|$, computed from the original
-cell identifiers. Each configuration yields $\binom{30}{2}=435$
-distinct pairs of placements. Table~\ref{tab:new20-oos-stability}
-reports the mean expected loss and CVaR, the mean and sample standard
-deviation of the risk-weighted objective, the proportion of problems
-solved to optimality, and the mean pairwise Jaccard index. The
-435 similarities summarize the same 30 placements and are not
-independent replications. All feasible placements enter the analysis,
-including those not solved to the prescribed optimality tolerance.
+We evaluate the B\&B-III placements obtained from 30 independent scenario
+samples for each $(n,\alpha,\lambda)$ configuration on a common set of
+1,000 independent wildfire scenarios. Let $\widehat\mu(Y)$ and
+$\widehat C_{0.9}(Y)$ denote the expected loss and CVaR evaluated on this
+test set, using the definitions in Section~\ref{sec2}. We report the
+risk-weighted objective $\widehat F_\lambda(Y)=
+\lambda\widehat\mu(Y)+(1-\lambda)\widehat C_{0.9}(Y)$.
+Spatial stability is measured by the Jaccard index
+$J(Y_a,Y_b)=|Y_a\cap Y_b|/|Y_a\cup Y_b|$ over
+$\binom{30}{2}=435$ placement pairs per configuration.
+Table~\ref{tab:new20-oos-stability} summarizes performance,
+variability, optimality certification, and spatial similarity.
+All feasible placements are included, even when optimality is not
+certified; pairwise similarities are not independent replications.
 
 \begin{table}[!htbp]
 \centering
@@ -1690,88 +1680,52 @@ $\lambda$ & $\alpha$ & $n$ & $\widehat\mu$ & $\widehat C_{0.9}$ & $\widehat F_\l
 \end{tabular}
 \end{table}
 
-Larger scenario samples generally improve out-of-sample performance and
-reduce its sensitivity to the sampled wildfire scenarios. At
-$\alpha=0.02$, the mean expected loss under $\lambda=1$ decreases from
-93.46 to 91.92 and 91.59 burned cells as $n$ increases from 100 to
-200 and 400, while its sample standard deviation falls from 2.12 to
-0.99. The mean--CVaR objective ($\lambda=0.5$) decreases from 149.68
-to 145.68 and 143.56, with its standard deviation falling from 5.41
-to 1.50. The reductions in mean loss are smaller between $n=200$ and
-$n=400$ than between $n=100$ and $n=200$, suggesting diminishing
-improvements from additional optimization scenarios within the tested
-range. Greater sample sizes provide more information about propagation
-uncertainty, reducing the influence of a particular scenario
-sample on the chosen decision. The improvement is not uniformly
-monotonic, however: at $\alpha=0.01$ the mean held-out mean--CVaR
-objective decreases from 205.38 to 202.68 and then rises slightly
-to 203.22. Comparisons across $n$ use separately generated scenario
-samples rather than nested samples.
+Increasing the number of optimization scenarios generally improves
+out-of-sample performance and reduces variability, with smaller gains
+between $n=200$ and $n=400$. For $\alpha=0.02$ and $\lambda=1$,
+mean expected loss decreases from 93.46 to 91.92 and 91.59 burned cells
+as $n$ increases from 100 to 200 and 400, while its standard deviation
+falls from 2.12 to 0.99. Under $\lambda=0.5$, the mean--CVaR objective
+decreases from 149.68 to 143.56, with its standard deviation falling
+from 5.41 to 1.50. For $\alpha=0.01$ and $\lambda=0$, the CVaR
+standard deviation falls from 9.22 to 2.38, and the difference between
+mean in-sample and out-of-sample CVaR narrows from 20.92 to 5.46 as
+$n$ increases from 100 to 400. Comparisons across sample sizes use
+independent rather than nested scenario samples.
 
-The reductions in out-of-sample dispersion are especially apparent
-for tail-risk objectives. At $\alpha=0.01$, the standard deviation of
-held-out CVaR decreases from 9.22 to 2.38 between $n=100$ and $n=400$,
-with all 30 sampled problems solved to optimality at both sizes.
-The discrepancy between in-sample and held-out CVaR also narrows:
-their respective mean values are 253.94 and 274.86 at $n=100$,
-compared with 262.76 and 268.22 at $n=400$. The smaller difference
-is consistent with a reduction in the sampling optimism of the
-empirical tail-risk objective. These patterns concern the stability
-of attained losses, which need not imply similar firebreak locations.
+Spatial similarity increases with sample size in all nine
+$(\alpha,\lambda)$ settings. At $\alpha=0.02$, mean Jaccard similarity
+rises from 0.42 to 0.60 for $\lambda=1$ and from 0.20 to 0.32 for
+$\lambda=0$ as $n$ increases from 100 to 400. However, spatial
+stability does not necessarily imply better objective values: at
+$(\alpha,\lambda)=(0.01,0.5)$, similarity rises from 0.39 to 0.41
+between $n=200$ and $n=400$, while the out-of-sample objective
+increases slightly from 202.68 to 203.22. Moreover, unresolved
+optimization gaps may affect spatial stability: at
+$(n,\alpha)=(400,0.03)$, only 1 of 30 CVaR and 4 of 30 mean--CVaR
+problems are certified optimal.
 
-The spatial comparison reveals a complementary pattern: increasing the
-number of optimization scenarios raises the mean Jaccard similarity in
-all nine $(\alpha,\lambda)$ settings. At $\alpha=0.02$, mean similarity
-for $\lambda=1$ increases from 0.42 to 0.54 and 0.60 as $n$ grows
-from 100 to 200 and 400; for $\lambda=0$, the corresponding values
-are 0.20, 0.28, and 0.32. For the smaller budget $\alpha=0.01$ and
-$\lambda=1$, the number of distinct placements among the 30 samples
-falls from 18 at $n=100$ to eight at $n=400$. These results suggest
-that larger scenario samples increasingly favor common protection
-patterns. Nevertheless, spatial similarity and held-out performance
-are distinct: at $(\alpha,\lambda)=(0.01,0.5)$, similarity increases
-from 0.39 to 0.41 between $n=200$ and $n=400$, whereas the mean
-out-of-sample objective rises slightly from 202.68 to 203.22.
+Increasing firebreak intensity reduces held-out wildfire losses,
+although marginal improvements diminish over the tested range.
+For $\lambda=1$ and $n=400$, mean expected burned area decreases
+from 133.04 cells at $\alpha=0.01$ to 91.59 at $\alpha=0.02$
+and 73.99 at $\alpha=0.03$. The second budget increment therefore
+provides a smaller additional reduction. This is an empirical
+observation for the tested landscape, not a general property of
+the model.
 
-Increasing the firebreak budget produces substantial improvements in
-held-out protection. For $\lambda=1$ and $n=400$, increasing
-$\alpha$ from 0.01 to 0.02 reduces the mean expected number of burned
-cells from 133.04 to 91.59; a further increase to 0.03 reduces it to
-73.99. The successive reductions, 41.45 and 17.59 cells, indicate a
-smaller marginal benefit from the second budget increment in these
-experiments. A larger budget permits the interruption of more
-propagation routes, although the protection offered by different
-firebreak locations can overlap. Accordingly, diminishing marginal
-improvements are plausible in this landscape, but they are an
-empirical observation rather than a general property of the model.
-
-The common test scenarios also reveal the trade-off induced by the
-risk-weighting parameter. At $(n,\alpha)=(200,0.02)$, placements
-obtained with $\lambda=1$ have a mean held-out expected loss of
-91.92 cells and CVaR of 205.35. With $\lambda=0.5$, these values are
-97.00 and 194.35: the balanced objective reduces CVaR by 5.4\% at
-the cost of a 5.5\% increase in expected loss. Pure CVaR minimization
-($\lambda=0$) gives corresponding values of 99.30 and 194.96.
-Thus, the balanced solutions achieve comparable held-out tail
-protection while retaining lower average loss in this configuration.
-The difference in tail performance relative to pure CVaR is small and
-should not be interpreted as deterministic dominance. Expected-loss
-minimization rewards protection across the full distribution, whereas
-CVaR assigns greater importance to adverse propagation scenarios;
-intermediate values of $\lambda$ allow a compromise between these
-goals. The selected locations also reflect this change in preference.
-For the same 30 scenario samples at $(n,\alpha)=(200,0.02)$, the
-mean Jaccard similarity between balanced and CVaR placements is 0.60,
-compared with 0.32 between expected-loss and CVaR placements. Thus,
-the balanced formulation achieves the observed tail-risk protection
-with firebreak locations closer to those selected under pure CVaR.
-
-At $(n,\alpha)=(400,0.03)$, only one of the 30 CVaR problems and
-four of the 30 mean--CVaR problems are solved to optimality. Although
-all feasible placements are evaluated, their performance and spatial
-similarity may reflect both sampling variability and unresolved
-optimization gaps. The observed increase in Jaccard similarity
-therefore does not establish convergence of the placements.
+Risk preferences create a trade-off between average and tail losses.
+At $(n,\alpha)=(200,0.02)$, expected-loss optimization ($\lambda=1$)
+gives mean out-of-sample loss 91.92 and CVaR 205.35, whereas
+the balanced objective ($\lambda=0.5$) gives 97.00 and 194.35:
+a 5.4\% CVaR reduction at the cost of a 5.5\% increase in expected
+loss. Pure CVaR minimization ($\lambda=0$) gives 99.30 and 194.96,
+indicating comparable tail protection but higher average loss than
+the balanced solution in this configuration, without establishing
+general dominance. The mean Jaccard similarity between balanced
+and CVaR placements is 0.60, compared with 0.32 between expected-loss
+and CVaR placements, showing that the balanced solutions select
+locations closer to those favored by pure CVaR minimization.
 
 % \subsection{Out-of-sample stability of SAA solutions}\label{sec:oos-stability}
 
