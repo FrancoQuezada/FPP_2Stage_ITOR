@@ -582,37 +582,37 @@ let $L_{\vb{y}}=L(\vb{y},\vb{w},\tau)$ denote
 the corresponding random wildfire loss.
 Its cumulative distribution function is
 %
-\begin{align}
+\begin{align*}
 F_{\vb{y}}(z)
 =
 \mathbb{P}
 \left(
 L_{\vb{y}}\leq z
 \right).
-\end{align}
+\end{align*}
 %
 For a confidence level $\beta\in(0,1)$,
 Value-at-Risk is defined as
 %
-\begin{align}
+\begin{align*}
 \operatorname{VaR}_{\beta}(L_{\vb{y}})
 =
 \inf\left\{
 z\in\mathbb{R}:
 F_{\vb{y}}(z)\geq\beta
 \right\}.
-\end{align}
+\end{align*}
 %
 The corresponding CVaR is given by
 %
-\begin{align}
+\begin{align*}
 \operatorname{CVaR}_{\beta}(L_{\vb{y}})
 =
 \frac{1}{1-\beta}
 \int_{\beta}^{1}
 \operatorname{VaR}_{\gamma}(L_{\vb{y}})
 \,d\gamma.
-\end{align}
+\end{align*}
 %
 CVaR can therefore be interpreted as the average
 loss in the worst $(1-\beta)$ proportion of
@@ -1120,7 +1120,6 @@ Treating a cell $v$ may prevent fire from reaching some or all of the cells in $
 When several firebreaks are selected, their downstream sets may overlap, causing the potential protection of individual cells to be counted multiple times. To account for this overlap, we consider subsets of the cells reachable without intervention and construct lower bounds on their contribution to the scenario loss.
 
 For each scenario $\omega \in \Omega$, let $U \subseteq R^\omega(\vb{0})$ be any subset of these cells. By restricting the wildfire loss to $U$ and subtracting the potential protection associated with the selected firebreaks, we obtain the following family of inequalities:
-%
 \begin{equation}
 \label{eq:coverage_projected}
 \theta^\omega \geq
@@ -1160,18 +1159,18 @@ $k \in D^\omega(v_j)$. Since $y_v \geq 0$, we obtain $x_k^\omega \geq
 %
 \begin{align*}
 Q^\omega(\vb{y})
-&\geq
+\geq
 \sum_{k \in U}w_k x_k^\omega
-\nonumber\\
-&\geq
+\nonumber
+\geq
 \sum_{k \in U}w_k
 \left(
 1-
 \sum_{\substack{v \in \mathcal{V}:\\
 k \in D^\omega(v)}}y_v
 \right)
-\nonumber\\
-&=
+\nonumber
+=
 \sum_{k \in U}w_k
 -
 \sum_{v \in \mathcal{V}}
@@ -2032,7 +2031,7 @@ to optimizing firebreak placement under uncertainty and risk aversion.
 
 
 \section*{Acknowledgments}
-This project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101037419 (\href{https://fire-res.eu}{FIRE-RES}) and the Complex Engineering Systems Institute (CONICYT-PIA-FB0816). \textbf{JC} acknowledges the support of the ANID through funding Postdoctoral Fondecyt project No 3210311. Also, the authors gratefully acknowledge the research support provided by Dicyt project 062217DG, Vicerrector\'ia de Investigaci\'on, Desarrollo e Innovaci\'on, Universidad de Santiago de Chile. The authors gratefully acknowledge the contributions of David Palacios and Andr\'es Weintraub to earlier versions of this manuscript.
+This project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101037419 (\href{https://fire-res.eu}{FIRE-RES}) and the Complex Engineering Systems Institute (CONICYT-PIA-FB0816). \textbf{JC} acknowledges the support of the ANID through funding Postdoctoral Fondecyt project No 3210311. Also, Franco Quezada and Sebastián Dávila-Gálvez are grateful for the support of the National Agency for Research and Development (ANID) Chile through grant FONDECYT XXXX and FONDECYT 11251766, respectively. The authors gratefully acknowledge the contributions of David Palacios and Andr\'es Weintraub to earlier versions of this manuscript.
 
 \bibliographystyle{cas-model2-names}
 
